@@ -8,21 +8,30 @@ import { UserContext } from "../App";
 const Home = () => {
   const { userId, handleLogin, handleLogout } = useContext(UserContext);
   return (
-    <>
-      <h1>Hello World.</h1>
-      {userId ? (
-        <button
-          onClick={() => {
-            googleLogout();
-            handleLogout();
-          }}
-        >
-          Logout
-        </button>
-      ) : (
-        <GoogleLogin onSuccess={handleLogin} onError={(err) => console.log(err)} />
-      )}
-    </>
+    <div className="home-container">
+      <div className="title-box">
+        <h1 className="title">Alignment Charts</h1>
+        <p className="description">
+          Create, share, and explore alignment charts like never before.
+        </p>
+      </div>
+
+      <div className="authentication">
+        {userId ? (
+          <button
+            className="logout-button"
+            onClick={() => {
+              googleLogout();
+              handleLogout();
+            }}
+          >
+            Logout
+          </button>
+        ) : (
+          <GoogleLogin onSuccess={handleLogin} onError={(err) => console.log(err)} />
+        )}
+      </div>
+    </div>
   );
 };
 

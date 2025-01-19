@@ -6,6 +6,7 @@
   align-items: center;
   padding: var(--s) var(--m);
   background-color: var(--periwinkle);
+  height: 5vh;
 }
 
 .NavBar-title {
