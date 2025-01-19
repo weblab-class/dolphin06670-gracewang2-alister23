@@ -1,0 +1,52 @@
+/* Base */
+.NavBar-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--s) var(--m);
+  background-color: var(--periwinkle);
+}
+
+.NavBar-title {
+  color: var(--white);
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.NavBar-linkContainer {
+  margin-left: var(--l);
+}
+
+.NavBar-right {
+  display: flex;
+  gap: 30px;
+}
+
+/* Links */
+.NavBar-link,
+.NavBar-link:visited {
+  color: var(--white);
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+.NavBar-link:hover {
+  opacity: 1;
+}
+
+.NavBar-link.NavBar-login {
+  opacity: 1;
+}
+
+.NavBar-link + .NavBar-link {
+  margin-left: var(--m);
+}
+
+/* Active Links */
+.NavBar-link-active {
+  color: var(--white);
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 2px solid;
+}

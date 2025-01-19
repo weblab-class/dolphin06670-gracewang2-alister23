@@ -11,6 +11,13 @@ import { get, post } from "../utilities";
 
 export const UserContext = createContext(null);
 
+import NavBar from "./modules/NavBar.jsx";
+import NotFound from "./pages/NotFound.jsx";
+import Home from "./pages/Home.jsx";
+import Create from "./pages/Create.jsx";
+import MyCharts from "./pages/MyCharts.jsx";
+import Library from "./pages/Library.jsx";
+
 /**
  * Define the "App" component
  */
@@ -48,9 +55,12 @@ const App = () => {
   };
 
   return (
-    <UserContext.Provider value={authContextValue}>
-      <Outlet />
-    </UserContext.Provider>
+    <>
+      <NavBar />
+      <UserContext.Provider value={authContextValue}>
+        <Outlet />
+      </UserContext.Provider>
+    </>
   );
 };
 
