@@ -9,7 +9,7 @@ import { UserContext } from "../App";
  * Page for viewing a library of most popular charts.
  */
 const Library = () => {
-  return <div>Library of Most Popular Charts</div>;
+  return <div className="library-container">Library of Most Popular Charts</div>;
 };
 
 export default Library;

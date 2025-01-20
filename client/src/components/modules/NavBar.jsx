@@ -14,7 +14,7 @@ const NavBar = () => {
   return (
     <nav className="NavBar-container">
       <div className="NavBar-left">
-        <h1 className="NavBar-title">Alignment Charts</h1>
+        <h1 className="NavBar-title">Alignify</h1>
       </div>
 
       <div className="NavBar-right">

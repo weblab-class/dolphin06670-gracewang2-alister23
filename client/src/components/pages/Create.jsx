@@ -9,7 +9,7 @@ import { UserContext } from "../App";
  * Page for creating a new alignment chart.
  */
 const Create = () => {
-  return <div>Create Page</div>;
+  return <div className="create-container">Create Page</div>;
 };
 
 export default Create;

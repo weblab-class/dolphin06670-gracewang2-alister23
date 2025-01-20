@@ -9,7 +9,7 @@ import { UserContext } from "../App";
  * Page for viewing my charts and charts that are shared with me.
  */
 const MyCharts = () => {
-  return <div>View My Charts + Charts Shared with Me</div>;
+  return <div className="mycharts-container">View My Charts + Charts Shared with Me</div>;
 };
 
 export default MyCharts;

@@ -14,7 +14,7 @@ const Home = () => {
       {/* Title Box */}
       <div className="home-container">
         <div className="title-box">
-          <h1 className="title">Alignment Charts</h1>
+          <h1 className="title">Alignify</h1>
           <p className="description">
             Create, share, and explore alignment charts like never before.
           </p>
