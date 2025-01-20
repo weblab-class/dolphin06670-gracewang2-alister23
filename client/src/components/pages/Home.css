@@ -30,6 +30,10 @@
   color: var(--silver);
 }
 
+.authentication {
+  margin-top: 2rem;
+}
+
 .logout-button {
   font-size: 1rem;
   color: var(--black);
@@ -38,4 +42,29 @@
   border-radius: 0.5rem;
   cursor: pointer;
   margin-top: 2rem;
+}
+
+/* Doodles */
+.doodles {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.left-doodle {
+  position: fixed;
+  display: flex;
+  width: 300px;
+  height: auto;
+  left: 350px;
+  bottom: 50px;
+}
+
+.right-doodle {
+  position: fixed;
+  display: flex;
+  width: 300px;
+  height: auto;
+  right: 300px;
+  bottom: 50px;
 }
