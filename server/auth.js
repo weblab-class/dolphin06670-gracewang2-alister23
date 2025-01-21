@@ -1,3 +1,8 @@
+//I have no idea if this works or not
+//But I'll assume it does
+//Since it was copied over
+// - Lilian (1/21/2025)
+
 const { OAuth2Client } = require("google-auth-library");
 const User = require("./models/user");
 const socketManager = require("./server-socket");
