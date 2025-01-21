@@ -1,4 +1,4 @@
-import Chart from "./chart";
+// import Chart from "./chart"; (Got "SyntaxError: Cannot use import statement outside a module")
 const mongoose = require("mongoose");
 const Chart = require("./chart");
 
