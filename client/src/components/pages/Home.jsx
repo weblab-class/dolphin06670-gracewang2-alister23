@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
 
 import "../../utilities.css";
+import "../../utilities.js";
 import "./Home.css";
 import ParticlesComponent from "./Particles.jsx";
 import { UserContext } from "../App";

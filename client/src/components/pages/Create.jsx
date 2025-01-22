@@ -4,6 +4,7 @@ import NewPoint from "../modules/NewPoint";
 import Chart from "../modules/Chart";
 
 import "../../utilities.css";
+import { get, post } from "../../utilities";
 import "./Create.css";
 import { UserContext } from "../App";
 
@@ -13,13 +14,22 @@ import { UserContext } from "../App";
 const Create = () => {
   const [chartId, setChartId] = useState("");
   const [points, setPoints] = useState([]);
+  const { userId } = useContext(UserContext);
 
   // Create a new chart and set its ID
   useEffect(() => {
-    post("/api/chart", { name: "" }).then((chart) => {
-      setChartId(chart._id);
-    });
-  }, []);
+    const newChart = {
+      name: "New Chart",
+      owner_id: userId,
+    };
+    post("/api/chart/create", newChart)
+      .then((chart) => {
+        setChartId(chart._id);
+      })
+      .catch((err) => {
+        console.error("Error sending POST request in Create.jsx: ", err);
+      });
+  }, [userId]);
 
   // Fetch all points for the current chart
   useEffect(() => {
@@ -28,7 +38,7 @@ const Create = () => {
         setPoints(fetchedPoints);
       });
     }
-  });
+  }, [chartId]);
 
   // When there's a new point, add it to the list of points
   const handleNewPoint = (newPoint) => {

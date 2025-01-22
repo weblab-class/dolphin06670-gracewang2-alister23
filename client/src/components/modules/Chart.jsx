@@ -1,15 +1,26 @@
 import React, { useState, useEffect, createContext } from "react";
 import "./Chart.css";
+import "../../utilities.css";
+import { get, post } from "../../utilities";
 
 const Chart = (props) => {
   const points = [];
 
   const displayPoint = (props) => {
+    // const leftOffset =
+    // const bottomOffset =
+
+    // const x = ;
+    // const y = ;
     const x = 4.9 + 3.59 * (12 + Number.parseFloat(props.point.x));
     const y = 1.5 + 3.53 * (12 + Number.parseFloat(props.point.y));
     const style = "--x:" + x + "px" + " --y:" + y + "px";
     points.push(
-      <div className="pointContainer" style={{ left: x + "%", bottom: y + "%" }}>
+      <div
+        key={props.point._id}
+        className="pointContainer"
+        style={{ left: x + "%", bottom: y + "%" }}
+      >
         <span className="point"></span>
         <p className="pointName">{props.point.name}</p>
       </div>

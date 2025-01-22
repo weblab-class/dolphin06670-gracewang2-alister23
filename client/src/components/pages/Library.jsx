@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
 
-import "../../utilities.css";
+import "../../utilities";
 import "./Library.css";
 import { UserContext } from "../App";
 

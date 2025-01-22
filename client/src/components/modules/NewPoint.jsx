@@ -1,7 +1,10 @@
 import React, { useState, useEffect, createContext } from "react";
 // const mongoose = require("mongoose");
 import "./NewPoint.css";
-import { set } from "core-js/core/dict";
+import "../../utilities.css";
+import { get, post } from "../../utilities";
+import { Point } from "@tsparticles/engine";
+// import { set } from "core-js/core/dict";
 
 const NewPoint = (props) => {
   const [name, setName] = useState("");
@@ -35,9 +38,10 @@ const NewPoint = (props) => {
     post("/api/point", pointData)
       .then((response) => {
         console.log("Point created: ", response);
-        setName(name);
-        setX(x);
-        setY(y);
+        props.onNewPoint(response);
+        setName("");
+        setX("");
+        setY("");
       })
       .catch((err) => {
         console.error("Error creating point: ", err);
@@ -48,15 +52,15 @@ const NewPoint = (props) => {
     <>
       <div className="container">
         <h1>Add New Point</h1>
-        <label for="pointname">Point Name: </label>
+        <label htmlFor="pointname">Point Name: </label>
         <input type="text" id="pointname" onChange={handleNameChange} value={name}></input>
         <br></br>
-        <label for="x_coord">
+        <label htmlFor="x_coord">
           Position on the <b>{props.left}</b> to <b>{props.right}</b> axis (between -12 and 12):
         </label>
         <input type="text" id="x_coord" onChange={handleXChange} value={x}></input>
         <br></br>
-        <label for="y_coord">
+        <label htmlFor="y_coord">
           Position on the <b>{props.top}</b> to <b>{props.bottom}</b> axis (between -12 and 12):
         </label>
         <input type="text" id="y_coord" onChange={handleYChange} value={y}></input>

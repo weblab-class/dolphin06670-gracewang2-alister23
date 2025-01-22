@@ -13,13 +13,32 @@ const auth = require("./auth");
 
 const router = express.Router();
 
+// Right now, the problem is that auth.ensureLoggedin is sending a response before the response is sent
+// which is why there's an error. In the future, we should make sure auth.ensureLoggedIn actually renders
+// something on the page so that users know to sign in. If they don't sign in, then nothing works because
+// two responses are being sent.
+// (for reference, I was getting an error about HTTP headers being sent twice, which is because of authentication)
+// "API request's result could not be converted to a JSON object" -> authentication problem (related to above)
+// "ReferenceError: Can't find variable: post" -> import {get, post} from "../../utilities"; is missing
+
 //Creates a chart
-router.post("", auth.ensureLoggedIn, (req, res) => {
+router.post("/create", auth.ensureLoggedIn, (req, res) => {
   const newChart = new Chart({
     name: req.body.name,
-    owner_id: req.user.googleid,
+    owner_id: req.body.owner_id,
   });
-  newChart.save().then((chart) => res.send(chart));
+
+  newChart
+    .save()
+    .then((chart) => {
+      console.log("Chart created: ", chart);
+      res.status(201).json(chart);
+    })
+    .catch((err) => {
+      if (!res.headersSent) {
+        res.status(500).json({ error: "Failed to create chart" }); // Ensure only one response is sent
+      }
+    });
 });
 
 // Fetches current list of points for a given chart
