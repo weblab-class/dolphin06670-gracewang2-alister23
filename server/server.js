@@ -35,9 +35,6 @@ const auth = require("./auth");
 const socketManager = require("./server-socket");
 
 // Server configuration below
-// TODO: Add db_password
-//Username: lilizhu
-//Password: fRMgaBq9il88G5hw
 const mongoConnectionURL = process.env.MONGO_SRV;
 const databaseName = "Alignify";
 
