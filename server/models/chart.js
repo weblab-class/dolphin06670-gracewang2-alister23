@@ -1,4 +1,4 @@
-import Point from "./point";
+// import Point from "./point";
 const mongoose = require("mongoose");
 const Point = require("./point");
 

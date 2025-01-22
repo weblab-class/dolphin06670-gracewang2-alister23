@@ -1,0 +1,61 @@
+.grid {
+  /* padding: 2vw 0 0 2vw; */
+  width: 50vw;
+  position: relative;
+}
+
+.point {
+  float: left;
+  position: absolute;
+
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  background-color: #000000;
+}
+
+.pointName {
+  font-size: 3px;
+}
+
+.horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+img {
+  width: 50vw;
+}
+
+.container {
+  text-align: center;
+}
+
+#left {
+  transform: rotate(270deg);
+  height: 1.5vw;
+}
+
+#right {
+  transform: rotate(90deg);
+  height: 1.5vw;
+}
+
+input {
+  font-family: "Outfit";
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+#name {
+  font-size: 30px;
+  font-weight: 500;
+  border-radius: 10px;
+  width: 250px;
+}
+
+.axis {
+  width: 100px;
+  border-radius: 3px;
+}
