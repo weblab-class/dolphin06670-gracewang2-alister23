@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
 
 import "../../utilities.css";
@@ -9,7 +9,32 @@ import { UserContext } from "../App";
  * Page for viewing my charts and charts that are shared with me.
  */
 const MyCharts = () => {
-  return <div className="mycharts-container">View My Charts + Charts Shared with Me</div>;
+  const { userId } = useContext(UserContext);
+  const [charts, setCharts] = useState([]);
+
+  useEffect(() => {
+    if (userId) {
+      get("/api/my_charts").then((charts) => {
+        setCharts(charts);
+      });
+    }
+  }, [userId]);
+
+  return (
+    <div className="mycharts-container">
+      <div className="title-container">
+        <h1 className="mycharts-title">My Charts</h1>
+      </div>
+      <div className="charts-grid">
+        {charts.map((chart) => (
+          <div key={chart._id} className="chart-card">
+            <h2>{chart.name}</h2>
+            <p>{chart.likes} heart-emoji</p> {/* REPLACE WITH HEART EMOJI */}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default MyCharts;

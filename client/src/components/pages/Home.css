@@ -4,13 +4,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 95vh; /* 1 vh = 1% of the view height */
-  background-color: var(--cream);
+  height: 95%; /* 1 vh = 1% of the view height; 1 vw = 1% of the view width */
+  position: relative;
 }
 
 .title-box {
-  position: absolute;
-  top: 25%;
+  margin-top: 8%;
   background-color: var(--slateblue);
   padding: 2rem;
   border-radius: 1rem;
@@ -44,27 +43,22 @@
   margin-top: 2rem;
 }
 
-/* Doodles */
-.doodles {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+/* Particles Background */
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10; /* This ensures that the particles stay in the background. */
 }
 
-.left-doodle {
+/* Stock Image Background */
+.dotted-line-image {
   position: fixed;
-  display: flex;
-  width: 300px;
-  height: auto;
-  left: 350px;
-  bottom: 50px;
-}
-
-.right-doodle {
-  position: fixed;
-  display: flex;
-  width: 300px;
-  height: auto;
-  right: 300px;
-  bottom: 50px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 }

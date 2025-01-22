@@ -1,4 +1,4 @@
-// import Point from "./point";
+// import Point from "./point"; (Got "SyntaxError: Cannot use import statement outside a module")
 const mongoose = require("mongoose");
 const Point = require("./point");
 
