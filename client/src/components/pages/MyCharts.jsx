@@ -15,6 +15,7 @@ const MyCharts = () => {
   useEffect(() => {
     if (userId) {
       get("/api/my_charts").then((charts) => {
+        charts.sort((a, b) => (a.name < b.name ? -1 : 1));
         setCharts(charts);
       });
     }
