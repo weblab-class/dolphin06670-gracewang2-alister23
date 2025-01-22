@@ -17,6 +17,50 @@ const Chart = (props) => {
     console.log(points);
   };
 
+  //Called when top axis changes
+  const topChanged = (event) => {
+    event.preventDefault();
+    const newVal = event.target.value;
+    const chartId = props.chartId;
+
+    put(`/api/charts/${chartId}/top`, {
+      top_axis: newVal,
+    });
+  };
+
+  //Called when left axis changes
+  const leftChanged = (event) => {
+    event.preventDefault();
+    const newVal = event.target.value;
+    const chartId = props.chartId;
+
+    put(`/api/charts/${chartId}/left`, {
+      left_axis: newVal,
+    });
+  };
+
+  //Called when right axis changes
+  const rightChanged = (event) => {
+    event.preventDefault();
+    const newVal = event.target.value;
+    const chartId = props.chartId;
+
+    put(`/api/charts/${chartId}/right`, {
+      right_axis: newVal,
+    });
+  };
+
+  //Called when bottom axis changes
+  const bottomChanged = (event) => {
+    event.preventDefault();
+    const newVal = event.target.value;
+    const chartId = props.chartId;
+
+    put(`/api/charts/${chartId}/top`, {
+      bottom_axis: newVal,
+    });
+  };
+
   for (const datapoint in props.points) {
     displayPoint({ point: props.points[datapoint] });
   }
@@ -24,16 +68,40 @@ const Chart = (props) => {
   return (
     <>
       <div className="container">
-        <input type="text" defaultValue="top axis" id="top" className="axis"></input>
+        <input
+          type="text"
+          defaultValue="top axis"
+          id="top"
+          className="axis"
+          onChange={topChanged}
+        ></input>
         <div className="horizontal">
-          <input type="text" defaultValue="left axis" id="left" className="axis"></input>
+          <input
+            type="text"
+            defaultValue="left axis"
+            id="left"
+            className="axis"
+            onChange={leftChanged}
+          ></input>
           <div className="grid">
             <img src="../../../images/grid.png"></img>
             <div className="points">{points}</div>
           </div>
-          <input type="text" defaultValue="right axis" id="right" className="axis"></input>
+          <input
+            type="text"
+            defaultValue="right axis"
+            id="right"
+            className="axis"
+            onChange={rightChanged}
+          ></input>
         </div>
-        <input type="text" defaultValue="bottom axis" id="bottom" className="axis"></input>
+        <input
+          type="text"
+          defaultValue="bottom axis"
+          id="bottom"
+          className="axis"
+          onChange={bottomChanged}
+        ></input>
         <br></br>
         <input type="text" defaultValue="chart name" id="name"></input>
       </div>

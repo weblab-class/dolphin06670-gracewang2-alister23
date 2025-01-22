@@ -14,7 +14,10 @@ const auth = require("./auth");
 const router = express.Router();
 
 //Creates a chart
-router.post("", auth.ensureLoggedIn, (req, res) => {
+router.post("/create", (req, res) => {
+  if (!req.body.name || !req.user.googleid) {
+    return res.status(400).send({ error: "Missing required fields (name or googleid)." });
+  }
   const newChart = new Chart({
     name: req.body.name,
     owner_id: req.user.googleid,
@@ -47,6 +50,70 @@ router.put("/:id", auth.ensureLoggedIn, (req, res) => {
       },
     }
   );
+});
+
+//When the top axis label changes
+router.put("/:id/top", auth.ensureLoggedIn, async (req, res) => {
+  const { top_axis } = req.body;
+
+  try {
+    const chartId = req.params.id;
+    if (!chartId || top_axis === undefined) {
+      return res.status(400).send({ message: "Invalid input" });
+    }
+    const result = await Chart.updateOne({ _id: chartId }, { $set: { top_axis: top_axis } });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "An error occurred" });
+  }
+});
+
+//When the left axis label changes
+router.put("/:id/left", auth.ensureLoggedIn, async (req, res) => {
+  const { left_axis } = req.body;
+
+  try {
+    const chartId = req.params.id;
+    if (!chartId || left_axis === undefined) {
+      return res.status(400).send({ message: "Invalid input" });
+    }
+    const result = await Chart.updateOne({ _id: chartId }, { $set: { left_axis: left_axis } });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "An error occurred" });
+  }
+});
+
+//When the right axis label changes
+router.put("/:id/right", auth.ensureLoggedIn, async (req, res) => {
+  const { right_axis } = req.body;
+
+  try {
+    const chartId = req.params.id;
+    if (!chartId || right_axis === undefined) {
+      return res.status(400).send({ message: "Invalid input" });
+    }
+    const result = await Chart.updateOne({ _id: chartId }, { $set: { right_axis: rigjt_axis } });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "An error occurred" });
+  }
+});
+
+//When the top axis label changes
+router.put("/:id/bottom", auth.ensureLoggedIn, async (req, res) => {
+  const { bottom_axis } = req.body;
+
+  try {
+    const chartId = req.params.id;
+    if (!chartId || bottom_axis === undefined) {
+      return res.status(400).send({ message: "Invalid input" });
+    }
+    const result = await Chart.updateOne({ _id: chartId }, { $set: { bottom_axis: bottom_axis } });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "An error occurred" });
+  }
 });
 
 //Deletes a chart
