@@ -5,13 +5,13 @@ const Chart = (props) => {
   const points = [];
 
   const displayPoint = (props) => {
-    const x = 6.5 + 3.57 * (12 + Number.parseFloat(props.point.x));
-    const y = 7.5 + 3.57 * (12 + Number.parseFloat(props.point.y));
+    const x = 4.9 + 3.59 * (12 + Number.parseFloat(props.point.x));
+    const y = 1.5 + 3.53 * (12 + Number.parseFloat(props.point.y));
     const style = "--x:" + x + "px" + " --y:" + y + "px";
     points.push(
-      <div>
-        <span className="point" style={{ left: x + "%", bottom: y + "%" }}></span>
-        {/* <p className="pointName">{props.point.name}</p> */}
+      <div className="pointContainer" style={{ left: x + "%", bottom: y + "%" }}>
+        <span className="point"></span>
+        <p className="pointName">{props.point.name}</p>
       </div>
     );
     console.log(points);
@@ -36,7 +36,6 @@ const Chart = (props) => {
         <input type="text" defaultValue="bottom axis" id="bottom" className="axis"></input>
         <br></br>
         <input type="text" defaultValue="chart name" id="name"></input>
-        {/* <span className="point" style={{ left: 200 + "px" }}></span> */}
       </div>
     </>
   );

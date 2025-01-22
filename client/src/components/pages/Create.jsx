@@ -19,6 +19,8 @@ const Create = () => {
             { name: "ayl27", x: -2, y: -2 },
             { name: "lilian", x: 10, y: -10 },
             { name: "grace", x: -12, y: -12 },
+            { name: "web.lab", x: 3.1415, y: 10 },
+            { name: "buka buka", x: 0, y: 0 },
           ]}
         />
         {/* <Chart /> */}

@@ -6,16 +6,26 @@
 
 .point {
   float: left;
-  position: absolute;
 
   height: 8px;
   width: 8px;
   border-radius: 50%;
   background-color: #000000;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.pointContainer {
+  position: absolute;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
 }
 
 .pointName {
-  font-size: 3px;
+  font-size: 10px;
 }
 
 .horizontal {
