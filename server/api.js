@@ -11,7 +11,7 @@ const express = require("express");
 
 // import models so we can interact with the database
 const Chart = require("./models/chart");
-const Point = require(".models/point");
+const Point = require("./models/point");
 const User = require("./models/user");
 
 // import authentication library
@@ -19,10 +19,10 @@ const auth = require("./auth");
 
 //import chartRoutes file
 const chartRoutes = require("./chartRoutes");
-router.use("/chart", chartRoutes);
 
 // api endpoints: all these paths will be prefixed with "/api/"
 const router = express.Router();
+router.use("/chart", chartRoutes);
 
 //initialize socket
 const socketManager = require("./server-socket");

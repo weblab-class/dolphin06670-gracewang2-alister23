@@ -6,8 +6,10 @@ const express = require("express");
 
 // import models so we can interact with the database
 const Chart = require("./models/chart");
-const Point = require(".models/point");
+const Point = require("./models/point");
 const User = require("./models/user");
+
+const auth = require("./auth");
 
 const router = express.Router();
 
