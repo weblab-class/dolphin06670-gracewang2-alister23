@@ -17,6 +17,10 @@ const User = require("./models/user");
 // import authentication library
 const auth = require("./auth");
 
+//import chartRoutes file
+const chartRoutes = require("./chartRoutes");
+router.use("/chart", chartRoutes);
+
 // api endpoints: all these paths will be prefixed with "/api/"
 const router = express.Router();
 
@@ -59,18 +63,9 @@ router.get("/my_charts", auth.ensureLoggedIn, (req, res) => {
   Chart.find({ owner_id: req.user.googleid }).then((charts) => res.send(charts));
 });
 
-//Returns chart given ID
-router.get("/chart/:id", auth.ensureLoggedIn, (req, res) => {
-  Chart.find({ _id: req.query.id }).then((charts) => res.send(charts));
-});
-
-//Creates a chart
-router.post("/chart", auth.ensureLoggedIn, (req, res) => {
-  const newChart = new Chart({
-    name: req.body.name,
-    owner_id: req.user.googleid,
-  });
-  newChart.save().then((chart) => res.send(chart));
+//Returns point given ID
+router.get("/point/:id", auth.ensureLoggedIn, (req, res) => {
+  Chart.find({ _id: req.query.id }).then((point) => res.send(point));
 });
 
 //Creates a point
@@ -83,14 +78,16 @@ router.post("/point", auth.ensureLoggedIn, (req, res) => {
   newPoint.save().then((comment) => res.send(comment));
 });
 
-//Edits a chart
+//Edits a point
 router.put("/chart/:id", auth.ensureLoggedIn, (req, res) => {
-  const { likes, owner_id, left_axis, right_axis, top_axis, bottom_axis, points } = req.body;
+  const { name, likes, owner_id, left_axis, right_axis, top_axis, bottom_axis, points } = req.body;
 
+  //To do: Make sure it only updates if owner_id == existing id
   Chart.updateOne(
     { _id: req.query.id },
     {
       $set: {
+        name: name,
         likes: likes,
         owner_id: owner_id,
         left_axis: left_axis,
@@ -103,7 +100,7 @@ router.put("/chart/:id", auth.ensureLoggedIn, (req, res) => {
   );
 });
 
-//Deletes a chart
+//Deletes a point
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
