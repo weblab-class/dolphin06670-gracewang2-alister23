@@ -12,7 +12,7 @@ const Chart = (props) => {
 
     // const x = ;
     // const y = ;
-    const x = 4.9 + 3.59 * (12 + Number.parseFloat(props.point.x));
+    const x = 7.3 + 3.56 * (12 + Number.parseFloat(props.point.x));
     const y = 1.5 + 3.53 * (12 + Number.parseFloat(props.point.y));
     points.push(
       <div
