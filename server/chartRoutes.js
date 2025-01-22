@@ -22,6 +22,13 @@ router.post("", auth.ensureLoggedIn, (req, res) => {
   newChart.save().then((chart) => res.send(chart));
 });
 
+// Fetches current list of points for a given chart
+router.get("/:id/points", auth.ensureLoggedIn, (req, res) => {
+  Point.find({ parent: req.query.parent }).then((points) => {
+    res.send(points);
+  });
+});
+
 //Returns chart given ID
 router.get("/:id", auth.ensureLoggedIn, (req, res) => {
   Chart.find({ _id: req.query.id }).then((chart) => res.send(chart));

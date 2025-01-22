@@ -74,6 +74,7 @@ router.post("/point", auth.ensureLoggedIn, (req, res) => {
     name: req.body.name,
     x_coord: req.body.x_coord,
     y_coord: req.body.y_coord,
+    parent: req.body.parent,
   });
   newPoint.save().then((comment) => res.send(comment));
 });

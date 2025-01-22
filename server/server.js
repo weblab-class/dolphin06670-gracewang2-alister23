@@ -38,8 +38,7 @@ const socketManager = require("./server-socket");
 // TODO: Add db_password
 //Username: lilizhu
 //Password: fRMgaBq9il88G5hw
-const mongoConnectionURL =
-  "mongodb+srv://gwang2:<db_password>@alignify.maluc.mongodb.net/?retryWrites=true&w=majority&appName=Alignify";
+const mongoConnectionURL = process.env.MONGO_SRV;
 const databaseName = "Alignify";
 
 // mongoose 7 warning

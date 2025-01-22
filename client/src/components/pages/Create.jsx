@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
 import NewPoint from "../modules/NewPoint";
 import Chart from "../modules/Chart";
@@ -11,10 +11,34 @@ import { UserContext } from "../App";
  * Page for creating a new alignment chart.
  */
 const Create = () => {
+  const [chartId, setChartId] = useState("");
+  const [points, setPoints] = useState([]);
+
+  // Create a new chart and set its ID
+  useEffect(() => {
+    post("/api/chart", { name: "" }).then((chart) => {
+      setChartId(chart._id);
+    });
+  }, []);
+
+  // Fetch all points for the current chart
+  useEffect(() => {
+    if (chartId) {
+      get("/api/chart/${chartId}/points").then((fetchedPoints) => {
+        setPoints(fetchedPoints);
+      });
+    }
+  });
+
+  // When there's a new point, add it to the list of points
+  const handleNewPoint = (newPoint) => {
+    setPoints([...points, newPoint]);
+  };
+
   return (
     <>
       <div className="Create-container u-flex">
-        <Chart
+        {/* <Chart
           points={[
             { name: "ayl27", x: -2, y: -2 },
             { name: "lilian", x: 10, y: -10 },
@@ -22,9 +46,18 @@ const Create = () => {
             { name: "web.lab", x: 3.1415, y: 10 },
             { name: "buka buka", x: 0, y: 0 },
           ]}
-        />
+        /> */}
         {/* <Chart /> */}
-        <NewPoint left="potato" right="carrot" bottom="dominos" top="subway" />
+
+        <Chart points={points} />
+        <NewPoint
+          chartId={chartId}
+          onNewPoint={handleNewPoint}
+          left="potato"
+          right="carrot"
+          bottom="dominos"
+          top="subway"
+        />
       </div>
     </>
   );
