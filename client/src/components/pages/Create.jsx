@@ -13,7 +13,7 @@ import { UserContext } from "../App";
 const Create = () => {
   return (
     <>
-      <div className="Create-container u-flex">
+      <div className="Create-container">
         <Chart
           points={[
             { name: "ayl27", x: -2, y: -2 },

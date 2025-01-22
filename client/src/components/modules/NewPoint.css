@@ -1,4 +1,46 @@
 .container {
-  display: flexbox;
-  align-items: left;
+  /* background-color: var(--periwinkle); */
+  margin: 20px;
+  margin-left: 50px;
+  width: 50vw;
+}
+
+.newpoint-title {
+  font-size: 45px;
+  margin-bottom: 4vw;
+}
+
+input {
+  border-radius: 4px;
+}
+
+.input_box {
+  margin-bottom: 4vw;
+}
+
+label {
+  font-size: 1.9vw;
+}
+
+#submit_point {
+  font-family: "Outfit";
+  background-color: white;
+  border: 3px solid var(--periwinkle);
+  border-radius: 4px;
+  font-size: 1.9vw;
+  color: var(--slateblue);
+}
+
+#submit_point:hover {
+  background-color: var(--slateblue);
+  color: var(--white);
+  border: 3px solid var(--slateblue);
+}
+
+#x_coord {
+  width: 1.6vw;
+}
+
+#y_coord {
+  width: 1.6vw;
 }

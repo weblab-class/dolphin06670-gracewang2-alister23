@@ -23,7 +23,7 @@ const Chart = (props) => {
 
   return (
     <>
-      <div className="container">
+      <div className="Chart-container">
         <input type="text" defaultValue="top axis" id="top" className="axis"></input>
         <div className="horizontal">
           <input type="text" defaultValue="left axis" id="left" className="axis"></input>
