@@ -35,10 +35,12 @@ const auth = require("./auth");
 const socketManager = require("./server-socket");
 
 // Server configuration below
-// TODO change connection URL after setting up your team database
-const mongoConnectionURL = process.env.MONGO_SRV;
-// TODO change database name to the name you chose
-const databaseName = "FILL_ME_IN";
+// TODO: Add db_password
+//Username: lilizhu
+//Password: fRMgaBq9il88G5hw
+const mongoConnectionURL =
+  "mongodb+srv://gwang2:<db_password>@alignify.maluc.mongodb.net/?retryWrites=true&w=majority&appName=Alignify";
+const databaseName = "Alignify";
 
 // mongoose 7 warning
 mongoose.set("strictQuery", false);
