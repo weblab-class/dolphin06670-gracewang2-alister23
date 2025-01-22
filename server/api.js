@@ -60,7 +60,7 @@ router.get("/my_charts", auth.ensureLoggedIn, (req, res) => {
 });
 
 //Returns chart given ID
-router.get("/chart", auth.ensureLoggedIn, (req, res) => {
+router.get("/chart/:id", auth.ensureLoggedIn, (req, res) => {
   Chart.find({ _id: req.query.id }).then((charts) => res.send(charts));
 });
 
@@ -82,6 +82,28 @@ router.post("/point", auth.ensureLoggedIn, (req, res) => {
   });
   newPoint.save().then((comment) => res.send(comment));
 });
+
+//Edits a chart
+router.put("/chart/:id", auth.ensureLoggedIn, (req, res) => {
+  const { likes, owner_id, left_axis, right_axis, top_axis, bottom_axis, points } = req.body;
+
+  Chart.updateOne(
+    { _id: req.query.id },
+    {
+      $set: {
+        likes: likes,
+        owner_id: owner_id,
+        left_axis: left_axis,
+        right_axis: right_axis,
+        top_axis: top_axis,
+        bottom_axis: bottom_axis,
+        points: points,
+      },
+    }
+  );
+});
+
+//Deletes a chart
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
