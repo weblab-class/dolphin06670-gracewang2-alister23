@@ -45,6 +45,44 @@ router.post("/initsocket", (req, res) => {
 // | write your API methods below!|
 // |------------------------------|
 
+//Middleware
+
+//Not-middleware (endware?)
+
+//Gets all charts
+router.get("/all_charts", auth.ensureLoggedIn, (req, res) => {
+  Chart.find({}).then((charts) => res.send(charts)); //Eventually change this to only private charts
+});
+
+//Gets charts made by current user
+router.get("/my_charts", auth.ensureLoggedIn, (req, res) => {
+  Chart.find({ owner_id: req.user.googleid }).then((charts) => res.send(charts));
+});
+
+//Returns chart given ID
+router.get("/chart", auth.ensureLoggedIn, (req, res) => {
+  Chart.find({ _id: req.query.id }).then((charts) => res.send(charts));
+});
+
+//Creates a chart
+router.post("/chart", auth.ensureLoggedIn, (req, res) => {
+  const newChart = new Chart({
+    name: req.body.name,
+    owner_id: req.user.googleid,
+  });
+  newChart.save().then((chart) => res.send(chart));
+});
+
+//Creates a point
+router.post("/point", auth.ensureLoggedIn, (req, res) => {
+  const newPoint = new Chart({
+    name: req.body.name,
+    x_coord: req.body.x_coord,
+    y_coord: req.body.y_coord,
+  });
+  newPoint.save().then((comment) => res.send(comment));
+});
+
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
   console.log(`API route not found: ${req.method} ${req.url}`);

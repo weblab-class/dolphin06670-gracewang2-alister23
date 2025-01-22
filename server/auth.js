@@ -1,4 +1,4 @@
-//I have no idea if this works or not
+//I have no idea if this works or not (I read over and think it does?)
 //But I'll assume it does
 //Since it was copied over
 // - Lilian (1/21/2025)
@@ -31,7 +31,7 @@ function getOrCreateUser(user) {
     const newUser = new User({
       name: user.name,
       googleid: user.sub,
-    });
+    }); //Lack of charts field should be fine since there's a default empty chart in chart.js
 
     return newUser.save();
   });
@@ -64,7 +64,8 @@ function populateCurrentUser(req, res, next) {
 
 function ensureLoggedIn(req, res, next) {
   if (!req.user) {
-    return res.status(401).send({ err: "not logged in" });
+    //return res.status(401).send({ err: "not logged in" });
+    res.redirect("/login");
   }
 
   next();
