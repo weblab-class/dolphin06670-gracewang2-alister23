@@ -1,4 +1,50 @@
 .mycharts-container {
-  height: 95vh;
-  background-color: var(--cream);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 95%;
+  position: relative;
+}
+
+.title-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
+  background-color: var(--slateblue);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.mycharts-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--white);
+}
+
+.charts-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.chart-card {
+  background-color: var(--white);
+  border: 1px solid var(--silver);
+  border-radius: 8px;
+  padding: 16px;
+  width: calc(33.333% - 20px); /* Three cards per row */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chart-card h2 {
+  margin: 0 0 8px;
+}
+
+.chart-card p {
+  margin: 4px 0;
 }

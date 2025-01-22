@@ -5,8 +5,10 @@ import "../../utilities.css";
 import "./Home.css";
 import ParticlesComponent from "./Particles.jsx";
 import { UserContext } from "../App";
+
 import FirstDoodle from "../../../images/beaver-with-magnifying-glass.png";
 import SecondDoodle from "../../../images/beaver-with-chart.png";
+import dottedLines from "../../../images/dotted-lines.png";
 
 const Home = () => {
   const { userId, handleLogin, handleLogout } = useContext(UserContext);
@@ -16,11 +18,7 @@ const Home = () => {
       {/* <ParticlesComponent className="particles" /> */}
 
       {/* Stock Image Background (for now) */}
-      <img
-        src="../../../images/dotted-lines.png"
-        alt="Stock Image of Dotted Lines"
-        className="dotted-line-image"
-      />
+      <img src={dottedLines} alt="Stock Image of Dotted Lines" className="dotted-line-image" />
 
       {/* Title Box */}
       <div className="home-container">
