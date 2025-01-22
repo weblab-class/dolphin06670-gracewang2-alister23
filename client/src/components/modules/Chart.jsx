@@ -2,6 +2,7 @@ import React, { useState, useEffect, createContext } from "react";
 import "./Chart.css";
 import "../../utilities.css";
 import { get, post } from "../../utilities";
+import Grid from "../../../images/grid.png";
 
 const Chart = (props) => {
   const points = [];
@@ -38,7 +39,7 @@ const Chart = (props) => {
         <div className="horizontal">
           <input type="text" defaultValue="left axis" id="left" className="axis"></input>
           <div className="grid">
-            <img src="../../../images/grid.png"></img>
+            <img src={Grid}></img>
             <div className="points">{points}</div>
           </div>
           <input type="text" defaultValue="right axis" id="right" className="axis"></input>
