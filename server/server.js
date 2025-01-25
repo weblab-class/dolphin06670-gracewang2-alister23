@@ -35,7 +35,8 @@ const auth = require("./auth");
 const socketManager = require("./server-socket");
 
 // Server configuration below
-const mongoConnectionURL = process.env.MONGO_SRV;
+const mongoConnectionURL =
+  "mongodb+srv://lilizhu:UFaCoFNBAyo37Fd5@alignify.maluc.mongodb.net/?retryWrites=true&w=majority&appName=Alignify";
 const databaseName = "Alignify";
 
 // mongoose 7 warning

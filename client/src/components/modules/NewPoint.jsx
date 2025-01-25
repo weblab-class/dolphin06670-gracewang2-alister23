@@ -48,8 +48,27 @@ const NewPoint = (props) => {
       });
   };
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Enter") {
+        // Find the submit button and trigger a click event
+        const submitButton = document.getElementById("submit_point");
+        if (submitButton) {
+          submitButton.click();
+        }
+      }
+    };
+    // Attach the event listener
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []); // Empty dependency array to run this effect only once
+
   return (
-    <>
+    <body>
       <div className="container">
         <h1 className="newpoint-title">Add New Point</h1>
         <div className="input_box">
@@ -77,7 +96,7 @@ const NewPoint = (props) => {
           Submit Point
         </button>
       </div>
-    </>
+    </body>
   );
 };
 
