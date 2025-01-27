@@ -34,10 +34,12 @@ const Chart = (props) => {
   const y_points = [];
   const labels = [];
 
-  for (const datapoint in props.points) {
+  for (const i in props.points) {
     // displayPoint({ point: props.points[datapoint] });
-    x_points.push(datapoint.x_coord);
-    y_points.push(datapoint.y_coord);
+    const datapoint = props.points[i];
+    // console.log(datapoint);
+    x_points.push(datapoint.x);
+    y_points.push(datapoint.y);
     labels.push(datapoint.name);
   }
 
@@ -60,7 +62,7 @@ const Chart = (props) => {
                   textposition: "bottom center",
                 },
               ]}
-              layout={{ width: 360, height: 240 }}
+              layout={{ width: 400, height: 380 }}
               // config={{ responsive: true }}
             />
           </div>
