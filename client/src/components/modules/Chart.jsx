@@ -3,6 +3,8 @@ import "./Chart.css";
 import "../../utilities.css";
 import { get, post } from "../../utilities";
 import Grid from "../../../images/grid.png";
+import Plot from "react-plotly.js";
+import { Responsive } from "@tsparticles/engine";
 
 const Chart = (props) => {
   const points = [];
@@ -28,8 +30,15 @@ const Chart = (props) => {
     console.log(points);
   };
 
+  const x_points = [];
+  const y_points = [];
+  const labels = [];
+
   for (const datapoint in props.points) {
-    displayPoint({ point: props.points[datapoint] });
+    // displayPoint({ point: props.points[datapoint] });
+    x_points.push(datapoint.x_coord);
+    y_points.push(datapoint.y_coord);
+    labels.push(datapoint.name);
   }
 
   return (
@@ -38,9 +47,22 @@ const Chart = (props) => {
         <input type="text" defaultValue="top axis" id="top" className="axis"></input>
         <div className="horizontal">
           <input type="text" defaultValue="left axis" id="left" className="axis"></input>
-          <div className="grid">
-            <img src={Grid}></img>
-            <div className="points">{points}</div>
+          <div className="grid" id="tester">
+            <Plot
+              data={[
+                {
+                  x: x_points,
+                  y: y_points,
+                  type: "scatter",
+                  mode: "markers+text",
+                  text: labels,
+                  marker: { color: "#705fbb" },
+                  textposition: "bottom center",
+                },
+              ]}
+              layout={{ width: 360, height: 240 }}
+              // config={{ responsive: true }}
+            />
           </div>
           <input type="text" defaultValue="right axis" id="right" className="axis"></input>
         </div>
