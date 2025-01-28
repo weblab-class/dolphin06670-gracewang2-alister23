@@ -6,6 +6,8 @@ import { get, post, del } from "../../utilities";
 import "./MyCharts.css";
 import { UserContext } from "../App";
 
+import ShareModal from "../modules/ShareModal";
+
 /**
  * Page for viewing my charts and charts that are shared with me.
  */
@@ -14,6 +16,7 @@ const MyCharts = () => {
   const [charts, setCharts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedChart, setSelectedChart] = useState(null);
+  const [selectedChartName, setSelectedChartName] = useState("New Chart");
 
   useEffect(() => {
     if (userId) {
@@ -27,7 +30,7 @@ const MyCharts = () => {
 
   // If the user is not logged in, remind them to log in.
   if (!userId) {
-    return <div>Please log in to view your charts.</div>;
+    return <div>Please log in to view your charts.</div>; // Make this prettier.
   }
 
   const handleDelete = (chartId) => {
@@ -41,6 +44,11 @@ const MyCharts = () => {
   const handleShare = (chartId) => {
     setIsModalOpen(true);
     setSelectedChart(chartId);
+    if (chartId) {
+      get(`/api/chart/${chartId}/name`).then((name) => {
+        setSelectedChartName(name);
+      });
+    }
   };
 
   const handleShareSubmit = (shareWith) => {
@@ -68,6 +76,7 @@ const MyCharts = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onShare={handleShareSubmit}
+        chartName={selectedChartName}
       />
     </div>
   );

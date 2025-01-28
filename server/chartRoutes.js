@@ -47,6 +47,11 @@ router.post("/create", (req, res) => {
     });
 });
 
+// Returns name of chart given ID
+router.get("/:id/name", (req, res) => {
+  Chart.find({ _id: req.params.id }).then((chart) => res.send(chart.name));
+});
+
 // Fetches current list of points for a given chart
 router.get("/:id/points", (req, res) => {
   Point.find({ parent: req.query.parent }).then((points) => {

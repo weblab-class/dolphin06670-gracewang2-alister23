@@ -31,6 +31,7 @@ function getOrCreateUser(user) {
     const newUser = new User({
       name: user.name,
       googleid: user.sub,
+      email: user.email,
     }); //Lack of charts field should be fine since there's a default empty chart in chart.js
 
     return newUser.save();
