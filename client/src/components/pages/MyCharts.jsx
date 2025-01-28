@@ -17,7 +17,7 @@ const MyCharts = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedChart, setSelectedChart] = useState(null);
   const [selectedChartName, setSelectedChartName] = useState("New Chart");
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState({});
 
   useEffect(() => {
     if (userId) {
@@ -33,6 +33,14 @@ const MyCharts = () => {
   if (!userId) {
     return <div>Please log in to view your charts.</div>; // Make this prettier.
   }
+
+  useEffect(() => {
+    const updatedLikes = {};
+    for (const chart of charts) {
+      updatedLikes[chart._id] = chart.likes;
+    }
+    setLiked(updatedLikes);
+  });
 
   const handleDelete = (chartId) => {
     console.log("Deleting chart: ", chartId);
@@ -55,15 +63,23 @@ const MyCharts = () => {
   const handleLike = (chartId) => {
     if (chartId) {
       if (liked) {
-        post(`/api/chart/${chartId}/unlike`).then((likes) => {
-          console.log(likes);
-        });
-        setLiked = false;
+        post(`/api/chart/${chartId}/unlike`)
+          .then((likes) => {
+            console.log(likes);
+          })
+          .catch((error) => {
+            console.error("error when unliking chart:", error);
+          });
+        setLiked(false);
       } else {
-        post(`/api/chart/${chartId}/like`).then((likes) => {
-          console.log(likes);
-        });
-        setLiked = true;
+        post(`/api/chart/${chartId}/like`)
+          .then((likes) => {
+            console.log(likes);
+          })
+          .catch((error) => {
+            console.error("error when liking chart:", error);
+          });
+        setLiked(true);
       }
     }
   };

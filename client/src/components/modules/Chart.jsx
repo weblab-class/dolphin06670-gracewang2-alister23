@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext } from "react";
 import "./Chart.css";
 import "../../utilities.css";
-import { get, post } from "../../utilities";
+import { get, post, put } from "../../utilities";
 import Grid from "../../../images/grid.png";
 import Plot from "react-plotly.js";
 import { Responsive } from "@tsparticles/engine";
@@ -9,35 +9,71 @@ import { Responsive } from "@tsparticles/engine";
 const Chart = (props) => {
   const points = [];
 
-  const displayPoint = (props) => {
-    // const leftOffset =
-    // const bottomOffset =
+  // const displayPoint = (props) => {
+  //   // const leftOffset =
+  //   // const bottomOffset =
 
-    // const x = ;
-    // const y = ;
-    const x = 7.3 + 3.56 * (12 + Number.parseFloat(props.point.x));
-    const y = 1.5 + 3.53 * (12 + Number.parseFloat(props.point.y));
-    points.push(
-      <div
-        key={props.point._id}
-        className="pointContainer"
-        style={{ left: x + "%", bottom: y + "%" }}
-      >
-        <span className="point"></span>
-        <p className="pointName">{props.point.name}</p>
-      </div>
-    );
-    console.log(points);
-  };
+  //   // const x = ;
+  //   // const y = ;
+  //   const x = 7.3 + 3.56 * (12 + Number.parseFloat(props.point.x));
+  //   const y = 1.5 + 3.53 * (12 + Number.parseFloat(props.point.y));
+  //   points.push(
+  //     <div
+  //       key={props.point._id}
+  //       className="pointContainer"
+  //       style={{ left: x + "%", bottom: y + "%" }}
+  //     >
+  //       <span className="point"></span>
+  //       <p className="pointName">{props.point.name}</p>
+  //     </div>
+  //   );
+  //   console.log(points);
+  // };
 
   const x_points = [];
   const y_points = [];
   const labels = [];
 
+  const topChanged = (event) => {
+    event.preventDefault();
+    const newVal = event.target.value;
+    const chartId = props.chartId;
+    put(`/api/charts/${chartId}/top`, {
+      top_axis: newVal,
+    });
+  };
+  //Called when left axis changes
+  const leftChanged = (event) => {
+    event.preventDefault();
+    const newVal = event.target.value;
+    const chartId = props.chartId;
+    put(`/api/charts/${chartId}/left`, {
+      left_axis: newVal,
+    });
+  };
+  //Called when right axis changes
+  const rightChanged = (event) => {
+    event.preventDefault();
+    const newVal = event.target.value;
+    const chartId = props.chartId;
+    put(`/api/charts/${chartId}/right`, {
+      right_axis: newVal,
+    });
+  };
+  //Called when bottom axis changes
+  const bottomChanged = (event) => {
+    event.preventDefault();
+    const newVal = event.target.value;
+    const chartId = props.chartId;
+    put(`/api/charts/${chartId}/top`, {
+      bottom_axis: newVal,
+    });
+  };
+
   for (const i in props.points) {
     // displayPoint({ point: props.points[datapoint] });
     const datapoint = props.points[i];
-    // console.log(datapoint);
+    console.log(datapoint);
     x_points.push(datapoint.x);
     y_points.push(datapoint.y);
     labels.push(datapoint.name);
@@ -54,7 +90,13 @@ const Chart = (props) => {
           onChange={topChanged}
         ></input>
         <div className="horizontal">
-          <input type="text" defaultValue="left axis" id="left" className="axis"></input>
+          <input
+            type="text"
+            defaultValue="left axis"
+            id="left"
+            className="axis"
+            onChange={leftChanged}
+          ></input>
           <div className="grid" id="tester">
             <Plot
               data={[

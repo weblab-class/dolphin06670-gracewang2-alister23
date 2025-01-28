@@ -92,9 +92,21 @@ router.post("/:id/like", async (req, res) => {
   try {
     const chartId = req.params.id;
     const result = await Chart.findById(chartId);
+    // res.status(200).json({ message: result.likes });
     result.likes += 1;
     console.log("liked chart");
-    res.send(result.likes);
+    await result
+      .save()
+      .then((chart) => {
+        console.log("Likes: ", chart.likes);
+        res.status(201).json(chart);
+      })
+      .catch((err) => {
+        if (!res.headersSent) {
+          res.status(500).json({ error: "Failed to like" }); // Ensure only one response is sent
+        }
+      });
+    return true;
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "An error occurred" });
@@ -106,9 +118,21 @@ router.post("/:id/unlike", async (req, res) => {
   try {
     const chartId = req.params.id;
     const result = await Chart.findById(chartId);
+    // res.status(200).json({ message: result.likes });
     result.likes -= 1;
     console.log("unliked chart");
-    res.send(result.likes);
+    await result
+      .save()
+      .then((chart) => {
+        console.log("Likes: ", chart.likes);
+        res.status(201).json(chart);
+      })
+      .catch((err) => {
+        if (!res.headersSent) {
+          res.status(500).json({ error: "Failed to unlike" }); // Ensure only one response is sent
+        }
+      });
+    return true;
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "An error occurred" });
@@ -211,7 +235,7 @@ router.post("/submit", (req, res) => {
         return res.status(404).send({ message: "User not found" });
       }
       user.charts.push(chartId);
-      res.send(user);
+      // res.send(user);
     })
     .catch((err) => {
       console.error("Error when submitting chart to user's list: ", err);
