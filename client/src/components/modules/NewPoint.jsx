@@ -2,7 +2,7 @@ import React, { useState, useEffect, createContext } from "react";
 // const mongoose = require("mongoose");
 import "./NewPoint.css";
 import "../../utilities.css";
-import { get, post } from "../../utilities";
+import { get, post, del, put } from "../../utilities";
 import { Point } from "@tsparticles/engine";
 // import { set } from "core-js/core/dict";
 

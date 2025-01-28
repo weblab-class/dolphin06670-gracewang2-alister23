@@ -7,7 +7,7 @@ import "../utilities.css";
 
 import { socket } from "../client-socket";
 
-import { get, post } from "../utilities";
+import { get, post, del, put } from "../utilities";
 
 export const UserContext = createContext(null);
 

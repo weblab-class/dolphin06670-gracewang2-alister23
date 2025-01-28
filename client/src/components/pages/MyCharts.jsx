@@ -2,9 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
 
 import "../../utilities.css";
-import { get, post, del } from "../../utilities";
+import { get, post, del, put } from "../../utilities";
 import "./MyCharts.css";
 import { UserContext } from "../App";
+
+import ShareModal from "../modules/ShareModal";
 
 /**
  * Page for viewing my charts and charts that are shared with me.
@@ -14,6 +16,8 @@ const MyCharts = () => {
   const [charts, setCharts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedChart, setSelectedChart] = useState(null);
+  const [selectedChartName, setSelectedChartName] = useState("New Chart");
+  const [error, setError] = useState(""); // I don't know if we actually need this.
 
   useEffect(() => {
     if (userId) {
@@ -27,7 +31,7 @@ const MyCharts = () => {
 
   // If the user is not logged in, remind them to log in.
   if (!userId) {
-    return <div>Please log in to view your charts.</div>;
+    return <div>Please log in to view your charts.</div>; // Make this prettier.
   }
 
   const handleDelete = (chartId) => {
@@ -41,11 +45,31 @@ const MyCharts = () => {
   const handleShare = (chartId) => {
     setIsModalOpen(true);
     setSelectedChart(chartId);
+    if (chartId) {
+      get(`/api/chart/${chartId}/name`).then((name) => {
+        setSelectedChartName(name);
+      });
+    }
   };
 
-  const handleShareSubmit = (shareWith) => {
+  const handleShareSubmit = (email, permission) => {
     // Only sharing with a specific user; we can have a separate button to "Make Public" or "Make Private".
-    console.log("Sharing chart with: ", shareWith);
+    put("/api/chart/share", { chartId: selectedChart, email: email, permission: permission })
+      .then((response) => {
+        console.log("Success! Chart shared: ", response);
+      })
+      .catch((err) => {
+        console.error("Failed to share chart: ", err);
+        setError("Oops! Something went wrong when sharing the chart. Can you try again?");
+      });
+  };
+
+  // Handles the button that makes a chart public or private
+  const togglePublic = (chartId, isPublic) => {
+    const status = isPublic ? "private" : "public"; // If it's currently public, it should be private, and vice versa.
+
+    // Update backend with new status via a POST request.
+    post(`/api/chart/${chartId}/status`, { status: status }).then(() => {});
   };
 
   return (
@@ -68,6 +92,7 @@ const MyCharts = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onShare={handleShareSubmit}
+        chartName={selectedChartName}
       />
     </div>
   );

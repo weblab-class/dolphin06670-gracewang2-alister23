@@ -4,7 +4,7 @@ import NewPoint from "../modules/NewPoint";
 import Chart from "../modules/Chart";
 
 import "../../utilities.css";
-import { get, post } from "../../utilities";
+import { get, post, del, put } from "../../utilities";
 import "./Create.css";
 import { UserContext } from "../App";
 
@@ -56,7 +56,7 @@ const Create = () => {
   // I'm thinking that the problem is that sometimes userId is undefined, which gives a 400 error in our endpoint.
   // In this case, we should remind them to log in.
   if (!userId) {
-    return <div>Please log in to create a chart.</div>;
+    return <div>Please log in to create or edit a chart.</div>;
   }
 
   // When there's a new point, add it to the list of points
@@ -67,7 +67,7 @@ const Create = () => {
   return (
     <>
       <div className="Create-container">
-        {/* <Chart
+        <Chart
           points={[
             { name: "ayl27", x: -2, y: -2 },
             { name: "lilian", x: 10, y: -10 },
@@ -76,10 +76,10 @@ const Create = () => {
             { name: "buka buka", x: 0, y: 0 },
             { name: "l", x: -12, y: -12 },
           ]}
-        /> */}
+        />
         {/* <Chart /> */}
 
-        <Chart points={points} />
+        {/* <Chart points={points} /> */}
         <NewPoint
           chartId={chartId}
           onNewPoint={handleNewPoint}
