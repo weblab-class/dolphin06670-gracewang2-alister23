@@ -17,6 +17,7 @@ const MyCharts = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedChart, setSelectedChart] = useState(null);
   const [selectedChartName, setSelectedChartName] = useState("New Chart");
+  const [liked, setLiked] = useState(false);
 
   useEffect(() => {
     if (userId) {
@@ -51,6 +52,22 @@ const MyCharts = () => {
     }
   };
 
+  const handleLike = (chartId) => {
+    if (chartId) {
+      if (liked) {
+        post(`/api/chart/${chartId}/unlike`).then((likes) => {
+          console.log(likes);
+        });
+        setLiked = false;
+      } else {
+        post(`/api/chart/${chartId}/like`).then((likes) => {
+          console.log(likes);
+        });
+        setLiked = true;
+      }
+    }
+  };
+
   const handleShareSubmit = (shareWith) => {
     // Only sharing with a specific user; we can have a separate button to "Make Public" or "Make Private".
     console.log("Sharing chart with: ", shareWith);
@@ -65,10 +82,11 @@ const MyCharts = () => {
         {charts.map((chart) => (
           <div key={chart._id} className="chart-card">
             <h2>{chart.name}</h2>
-            <p>{chart.likes} heart-emoji</p> {/* REPLACE WITH HEART EMOJI */}
+            <p>{chart.likes} 💜</p>
             <button onClick={() => handleDelete(chart._id)}>Delete</button>
             <button onClick={() => handleShare(chart._id)}>Share</button>
             <button>Edit</button>
+            <button onClick={() => handleLike(chart._id)}>Like</button>
           </div>
         ))}
       </div>

@@ -10,6 +10,7 @@ const Point = require("./models/point");
 const User = require("./models/user");
 
 const auth = require("./auth");
+const chart = require("./models/chart");
 
 const router = express.Router();
 
@@ -84,6 +85,34 @@ router.put("/:id", (req, res) => {
       },
     }
   );
+});
+
+//Add a like to a chart
+router.post("/:id/like", async (req, res) => {
+  try {
+    const chartId = req.params.id;
+    const result = await Chart.findById(chartId);
+    result.likes += 1;
+    console.log("liked chart");
+    res.send(result.likes);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "An error occurred" });
+  }
+});
+
+//Remove your like from a chart
+router.post("/:id/unlike", async (req, res) => {
+  try {
+    const chartId = req.params.id;
+    const result = await Chart.findById(chartId);
+    result.likes -= 1;
+    console.log("unliked chart");
+    res.send(result.likes);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "An error occurred" });
+  }
 });
 
 //When the top axis label changes
