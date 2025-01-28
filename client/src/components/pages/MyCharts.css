@@ -1,7 +1,6 @@
 .mycharts-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   height: 95%;
   position: relative;
@@ -9,17 +8,20 @@
 
 .title-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  height: 10vh;
-  background-color: var(--slateblue);
-  padding: 2rem;
-  border-radius: 1rem;
+  height: auto;
+  background: var(--slateblue);
+  padding: 0.5rem 5rem;
+  border-radius: 0.25rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  margin-top: 2rem;
+  margin-left: 2rem;
+  align-self: flex-start;
 }
 
 .mycharts-title {
-  font-size: 3rem;
+  font-size: 1rem;
   font-weight: bold;
   color: var(--white);
 }
@@ -27,24 +29,38 @@
 .charts-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
+  justify-content: center; /* Center-align cards */
+  gap: 3rem; /* Slightly larger gap */
+  margin-top: 2rem;
+  width: 100%;
 }
 
 .chart-card {
-  background-color: var(--white);
+  background: linear-gradient(145deg, #d9d9d9, #f0f0f0); /* Silver gradient */
   border: 1px solid var(--silver);
   border-radius: 8px;
   padding: 16px;
-  width: calc(33.333% - 20px); /* Three cards per row */
+  width: 25%; /* Set fixed width */
+  aspect-ratio: 3 / 1; /* Set aspect ratio */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Space out title and text */
+  align-items: center; /* Center content horizontally */
+  transition: transform 0.3s, box-shadow 0.3s; /* Add some interactivity */
+}
+
+.chart-card:hover {
+  transform: scale(1.05); /* Slight zoom effect */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.6); /* Deeper shadow on hover */
 }
 
 .chart-card h2 {
-  margin: 0 0 8px;
+  margin: 0;
+  text-align: center; /* Center-align "New Chart" text */
 }
 
 .chart-card p {
   margin: 4px 0;
+  text-align: left; /* Bottom text stays left-aligned */
 }

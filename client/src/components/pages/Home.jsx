@@ -4,7 +4,7 @@ import { GoogleLogin, googleLogout } from "@react-oauth/google";
 import "../../utilities.css";
 import "../../utilities.js";
 import "./Home.css";
-import ParticlesComponent from "./Particles.jsx";
+import ParticlesComponent from "../modules/Particles.jsx";
 import { UserContext } from "../App";
 
 import FirstDoodle from "../../../images/beaver-with-magnifying-glass.png";

@@ -17,28 +17,47 @@ const Create = () => {
   const { userId } = useContext(UserContext);
 
   // Create a new chart and set its ID
+  // I know previous code used googleid, but I'm going to replace everything with _id for now.
   useEffect(() => {
-    const newChart = {
-      name: "New Chart",
-      owner_id: userId,
-    };
-    post("/api/chart/create", newChart)
-      .then((chart) => {
-        setChartId(chart._id);
-      })
-      .catch((err) => {
-        console.error("Error sending POST request in Create.jsx: ", err);
-      });
-  }, [userId]);
+    if (userId) {
+      const newChart = {
+        name: "New Chart",
+        owner_id: userId,
+      };
+
+      post("/api/chart/create", newChart)
+        .then((chart) => {
+          setChartId(chart._id);
+          // When a chart is created, submit it to the database
+          const chartData = {
+            chartId: chart._id,
+            userId: userId,
+          };
+
+          post("/api/chart/submit", chartData).then((user) => {
+            console.log("Chart submitted: ", user);
+          });
+        })
+        .catch((err) => {
+          console.error("Error sending POST request in Create.jsx: ", err);
+        });
+    }
+  }, []);
 
   // Fetch all points for the current chart
   useEffect(() => {
     if (chartId) {
-      get("/api/chart/${chartId}/points").then((fetchedPoints) => {
+      get(`/api/chart/${chartId}/points`).then((fetchedPoints) => {
         setPoints(fetchedPoints);
       });
     }
   }, [chartId]);
+
+  // I'm thinking that the problem is that sometimes userId is undefined, which gives a 400 error in our endpoint.
+  // In this case, we should remind them to log in.
+  if (!userId) {
+    return <div>Please log in to create a chart.</div>;
+  }
 
   // When there's a new point, add it to the list of points
   const handleNewPoint = (newPoint) => {

@@ -22,13 +22,16 @@ const router = express.Router();
 // "ReferenceError: Can't find variable: post" -> import {get, post} from "../../utilities"; is missing
 
 //Creates a chart
-router.post("/create", auth.ensureLoggedIn, (req, res) => {
-  if (!req.body.name || !req.user.googleid) {
-    return res.status(400).send({ error: "Missing required fields (name or googleid)." });
+router.post("/create", (req, res) => {
+  console.log("Received request to create chart: ", req.body);
+
+  if (!req.body.name || !req.body.owner_id) {
+    console.error("Missing required fields (name or owner_id).");
+    return res.status(400).json({ error: "Missing required fields (name or googleid)." });
   }
   const newChart = new Chart({
     name: req.body.name,
-    owner_id: req.body.owner_id,
+    owner_id: req.body.owner_id, // Here, owner_id is just the regular _id of the user.
   });
 
   newChart
@@ -45,19 +48,19 @@ router.post("/create", auth.ensureLoggedIn, (req, res) => {
 });
 
 // Fetches current list of points for a given chart
-router.get("/:id/points", auth.ensureLoggedIn, (req, res) => {
+router.get("/:id/points", (req, res) => {
   Point.find({ parent: req.query.parent }).then((points) => {
     res.send(points);
   });
 });
 
 //Returns chart given ID
-router.get("/:id", auth.ensureLoggedIn, (req, res) => {
+router.get("/:id", (req, res) => {
   Chart.find({ _id: req.query.id }).then((chart) => res.send(chart));
 });
 
 //Edits a chart
-router.put("/:id", auth.ensureLoggedIn, (req, res) => {
+router.put("/:id", (req, res) => {
   const { name, likes, owner_id, left_axis, right_axis, top_axis, bottom_axis, points } = req.body;
 
   //To do: Make sure it only updates if owner_id == existing id
@@ -79,7 +82,7 @@ router.put("/:id", auth.ensureLoggedIn, (req, res) => {
 });
 
 //When the top axis label changes
-router.put("/:id/top", auth.ensureLoggedIn, async (req, res) => {
+router.put("/:id/top", async (req, res) => {
   const { top_axis } = req.body;
 
   try {
@@ -95,7 +98,7 @@ router.put("/:id/top", auth.ensureLoggedIn, async (req, res) => {
 });
 
 //When the left axis label changes
-router.put("/:id/left", auth.ensureLoggedIn, async (req, res) => {
+router.put("/:id/left", async (req, res) => {
   const { left_axis } = req.body;
 
   try {
@@ -111,7 +114,7 @@ router.put("/:id/left", auth.ensureLoggedIn, async (req, res) => {
 });
 
 //When the right axis label changes
-router.put("/:id/right", auth.ensureLoggedIn, async (req, res) => {
+router.put("/:id/right", async (req, res) => {
   const { right_axis } = req.body;
 
   try {
@@ -126,8 +129,8 @@ router.put("/:id/right", auth.ensureLoggedIn, async (req, res) => {
   }
 });
 
-//When the top axis label changes
-router.put("/:id/bottom", auth.ensureLoggedIn, async (req, res) => {
+//When the bottom axis label changes
+router.put("/:id/bottom", async (req, res) => {
   const { bottom_axis } = req.body;
 
   try {
@@ -143,9 +146,43 @@ router.put("/:id/bottom", auth.ensureLoggedIn, async (req, res) => {
 });
 
 //Deletes a chart
-router.delete("/:id", auth.ensureLoggedIn, (req, res) => {
-  Chart.deleteOne(req.params.id);
+router.delete("/:id", async (req, res) => {
+  // Chart.deleteOne(req.params.id);
   //To do: Make sure it only deletes if owner_id == existing id
+  const chartId = req.params.id;
+  const userId = req.user._id;
+
+  Chart.deleteOne({ _id: chartId, owner_id: userId })
+    .then(() => res.send({ message: "Chart deleted successfully!" }))
+    .catch((err) => res.status(500).send({ error: "Oh no! Failed to delete chart." }));
+
+  // Update user's list of charts by removing chartId from list of charts (via $pull)
+  const update = await User.updateOne({ _id: userId }, { $pull: { charts: chartId } });
+  if (update.nModified === 0) {
+    return res.status(404).send({ message: "User not found or chart not in user's list" });
+  }
+});
+
+// Submit chart -> add to user's list of charts
+router.post("/submit", (req, res) => {
+  const chartId = req.body.chartId;
+  const userId = req.body.userId;
+  console.log("Received request to /api/chart/submit: ", req.body);
+
+  User.findById(userId)
+    .then((user) => {
+      console.log("Found user: ", user);
+      if (!user) {
+        console.error("Couldn't find user when submitting chart to user's list");
+        return res.status(404).send({ message: "User not found" });
+      }
+      user.charts.push(chartId);
+      res.send(user);
+    })
+    .catch((err) => {
+      console.error("Error when submitting chart to user's list: ", err);
+      res.status(500).send({ message: "Failed to add chart to user's list" });
+    });
 });
 
 module.exports = router;
