@@ -12,7 +12,7 @@ const ChartSchema = new mongoose.Schema({
   bottom_axis: { type: String, default: "Bottom Axis" },
   points: { type: [mongoose.Schema.Types.ObjectId], ref: "Point", default: [] },
 
-  public: { type: Boolean, default: false },
+  isPublic: { type: Boolean, default: false },
   can_edit: { type: [mongoose.Schema.Types.ObjectId], ref: "User", default: [this._id] },
   can_view: { type: [mongoose.Schema.Types.ObjectId], ref: "User", default: [this._id] },
 });

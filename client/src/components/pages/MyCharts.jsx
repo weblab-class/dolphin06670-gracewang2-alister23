@@ -46,7 +46,7 @@ const MyCharts = () => {
     setIsModalOpen(true);
     setSelectedChart(chartId);
     if (chartId) {
-      get(`/api/chart/${chartId}/name`).then((name) => {
+      get(`/api/chart/name/${chartId}`).then((name) => {
         setSelectedChartName(name);
       });
     }
@@ -67,9 +67,18 @@ const MyCharts = () => {
   // Handles the button that makes a chart public or private
   const togglePublic = (chartId, isPublic) => {
     const status = isPublic ? "private" : "public"; // If it's currently public, it should be private, and vice versa.
-
+    console.log("status in MyCharts.jsx frontend (before put): ", status);
     // Update backend with new status via a POST request.
-    post(`/api/chart/${chartId}/status`, { status: status }).then(() => {});
+    put(`/api/chart/status/${chartId}`, { status: status })
+      .then(() => {
+        // Update charts on the frontend.
+        setCharts((charts) =>
+          charts.map((chart) => (chart._id === chartId ? { ...chart, isPublic: !isPublic } : chart))
+        );
+      })
+      .catch((err) => {
+        console.error("Oops! Failed to update chart status (public or private): ", err);
+      });
   };
 
   return (
@@ -85,6 +94,12 @@ const MyCharts = () => {
             <button onClick={() => handleDelete(chart._id)}>Delete</button>
             <button onClick={() => handleShare(chart._id)}>Share</button>
             <button>Edit</button>
+            <button
+              className="toggle-public-button"
+              onClick={() => togglePublic(chart._id, chart.isPublic)}
+            >
+              {chart.isPublic ? "Make Private" : "Make Public"}
+            </button>
           </div>
         ))}
       </div>

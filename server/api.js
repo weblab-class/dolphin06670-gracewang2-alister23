@@ -74,6 +74,16 @@ router.get("/all_charts", (req, res) => {
   Chart.find({}).then((charts) => res.send(charts)); //Eventually change this to only private charts
 });
 
+// Gets all public charts
+router.get("/public_charts", (req, res) => {
+  Chart.find({ isPublic: true })
+    .then((charts) => res.send(charts))
+    .catch((err) => {
+      console.error("There was an issue trying to get all public charts: ", err);
+      res.status(500).send({ message: "Failed to get public charts" });
+    });
+});
+
 //Gets charts made by current user
 router.get("/my_charts", (req, res) => {
   // Chart.find({ owner_id: req.user.googleid }).then((charts) => res.send(charts));

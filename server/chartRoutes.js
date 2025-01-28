@@ -48,27 +48,29 @@ router.post("/create", (req, res) => {
 });
 
 // Returns name of chart given ID
-router.get("/:id/name", (req, res) => {
+router.get("/name/:id", (req, res) => {
   Chart.find({ _id: req.params.id }).then((chart) => res.send(chart.name));
 });
 
 // Returns status (public or not) of chart given ID
-router.get("/:id/status", (req, res) => {
-  Chart.find({ _id: req.params.id }).then((chart) => res.send(chart.isPublic));
+router.get("/status/:id", (req, res) => {
+  Chart.find({ _id: req.params.id }).then((chart) => res.send({ isPublic: chart.isPublic }));
 });
 
 // Makes a chart public or private
-router.put("/:id/status", async (req, res) => {
-  const { status } = req.body;
+router.put("/status/:id", async (req, res) => {
+  const status = req.body.status;
   try {
     const chart = await Chart.findById(req.params.id);
     if (!chart) {
+      console.error("Couldn't find chart when making chart public or private");
       return res
         .status(404)
         .send({ message: "Chart not found (when trying to make chart public or private)" });
     }
-    chart.isPublic = status === "public"; // chart.isPublic is a boolean
+    chart.isPublic = status === "public"; // chart.public is a boolean
     await chart.save();
+    console.log("Logging chart.public in the API endpoint (after put)", chart.isPublic);
     res.status(200).send({ message: "Chart status (public or private) updated successfully" });
   } catch (err) {
     res.status(500).send({ message: "An error occurred" });

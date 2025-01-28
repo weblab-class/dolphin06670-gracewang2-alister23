@@ -9,6 +9,43 @@ import { Responsive } from "@tsparticles/engine";
 const Chart = (props) => {
   const points = [];
 
+  //Called when top axis changes
+  const topChanged = (event) => {
+    event.preventDefault();
+    const newVal = event.target.value;
+    const chartId = props.chartId;
+    put(`/api/charts/${chartId}/top`, {
+      top_axis: newVal,
+    });
+  };
+  //Called when left axis changes
+  const leftChanged = (event) => {
+    event.preventDefault();
+    const newVal = event.target.value;
+    const chartId = props.chartId;
+    put(`/api/charts/${chartId}/left`, {
+      left_axis: newVal,
+    });
+  };
+  //Called when right axis changes
+  const rightChanged = (event) => {
+    event.preventDefault();
+    const newVal = event.target.value;
+    const chartId = props.chartId;
+    put(`/api/charts/${chartId}/right`, {
+      right_axis: newVal,
+    });
+  };
+  //Called when bottom axis changes
+  const bottomChanged = (event) => {
+    event.preventDefault();
+    const newVal = event.target.value;
+    const chartId = props.chartId;
+    put(`/api/charts/${chartId}/top`, {
+      bottom_axis: newVal,
+    });
+  };
+
   const displayPoint = (props) => {
     // const leftOffset =
     // const bottomOffset =
