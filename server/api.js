@@ -54,6 +54,30 @@ router.use(auth.populateCurrentUser);
 // Middleware to ensure that the user is logged in
 router.use(auth.ensureLoggedIn);
 
+// Check if an email (user) exists
+router.get("/user_exists/:email", (req, res) => {
+  const email = req.params.email;
+  User.findOne({ email: email }).then((user) => {
+    if (user) {
+      res.send({ exists: true });
+    } else {
+      res.send({ exists: false });
+    }
+  });
+});
+
+// Get user from specified email
+router.get("/user_from_email/:email", (req, res) => {
+  const email = req.params.email;
+  User.findOne({ email: email }).then((user) => {
+    if (user) {
+      res.send(user);
+    } else {
+      res.status(404).send({ error: "User not found" });
+    }
+  });
+});
+
 // Use chartRoutes for all routes starting with "/api/chart"
 router.use("/chart", chartRoutes);
 

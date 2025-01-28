@@ -10,12 +10,23 @@ import { get, post } from "../../utilities";
  */
 const ShareModal = (props) => {
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
 
   if (!isOpen) {
     return null;
   }
 
+  // Do error-handling later.
   const handleShareWithEmail = () => {
+    // Validate the email
+    get(`/api/user_exists/${email}`).then((response) => {
+      if (response.exists) {
+        onShare(email);
+        onClose();
+      } else {
+        setError("Oops! It seems like we don't have a user with this email address.");
+      }
+    });
     onShare(email);
     onClose();
   };
@@ -28,8 +39,12 @@ const ShareModal = (props) => {
           type="text"
           placeholder="Enter email here"
           value={email}
-          onChange={(event) => setEmail(event.target.value)}
+          onChange={(event) => {
+            setEmail(event.target.value);
+            setError(""); // Error should be cleared when user types
+          }}
         />
+        {error && <p className="no-such-user-error-message">{error}</p>}
         <button onClick={handleShareWithEmail}>Share with a Friend</button>
         <button onClick={onClose}>Cancel</button>
       </div>
