@@ -5,6 +5,7 @@ const Chart = require("./chart");
 const UserSchema = new mongoose.Schema({
   name: String,
   googleid: String,
+  email: { type: String, required: true, unique: true },
   charts: { type: [mongoose.Schema.Types.ObjectId], ref: "Chart", default: [] },
 });
 

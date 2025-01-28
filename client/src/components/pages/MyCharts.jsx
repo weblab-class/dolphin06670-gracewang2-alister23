@@ -12,6 +12,8 @@ import { UserContext } from "../App";
 const MyCharts = () => {
   const { userId } = useContext(UserContext);
   const [charts, setCharts] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedChart, setSelectedChart] = useState(null);
 
   useEffect(() => {
     if (userId) {
@@ -36,6 +38,16 @@ const MyCharts = () => {
     });
   };
 
+  const handleShare = (chartId) => {
+    setIsModalOpen(true);
+    setSelectedChart(chartId);
+  };
+
+  const handleShareSubmit = (shareWith) => {
+    // Only sharing with a specific user; we can have a separate button to "Make Public" or "Make Private".
+    console.log("Sharing chart with: ", shareWith);
+  };
+
   return (
     <div className="mycharts-container">
       <div className="title-container">
@@ -47,11 +59,16 @@ const MyCharts = () => {
             <h2>{chart.name}</h2>
             <p>{chart.likes} heart-emoji</p> {/* REPLACE WITH HEART EMOJI */}
             <button onClick={() => handleDelete(chart._id)}>Delete</button>
-            <button>Share</button>
+            <button onClick={() => handleShare(chart._id)}>Share</button>
             <button>Edit</button>
           </div>
         ))}
       </div>
+      <ShareModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onShare={handleShareSubmit}
+      />
     </div>
   );
 };
