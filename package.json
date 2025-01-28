@@ -33,6 +33,7 @@
     "mongoose": "^7.8.3",
     "nodemon": "^3.1.9",
     "plotly.js": "^2.35.3",
+    "plotly.js-dist": "^2.35.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-plotly.js": "^2.6.0",

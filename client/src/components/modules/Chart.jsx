@@ -3,6 +3,8 @@ import "./Chart.css";
 import "../../utilities.css";
 import { get, post } from "../../utilities";
 import Grid from "../../../images/grid.png";
+import Plot from "react-plotly.js";
+import { Responsive } from "@tsparticles/engine";
 
 const Chart = (props) => {
   const points = [];
@@ -28,52 +30,17 @@ const Chart = (props) => {
     console.log(points);
   };
 
-  //Called when top axis changes
-  const topChanged = (event) => {
-    event.preventDefault();
-    const newVal = event.target.value;
-    const chartId = props.chartId;
+  const x_points = [];
+  const y_points = [];
+  const labels = [];
 
-    put(`/api/charts/${chartId}/top`, {
-      top_axis: newVal,
-    });
-  };
-
-  //Called when left axis changes
-  const leftChanged = (event) => {
-    event.preventDefault();
-    const newVal = event.target.value;
-    const chartId = props.chartId;
-
-    put(`/api/charts/${chartId}/left`, {
-      left_axis: newVal,
-    });
-  };
-
-  //Called when right axis changes
-  const rightChanged = (event) => {
-    event.preventDefault();
-    const newVal = event.target.value;
-    const chartId = props.chartId;
-
-    put(`/api/charts/${chartId}/right`, {
-      right_axis: newVal,
-    });
-  };
-
-  //Called when bottom axis changes
-  const bottomChanged = (event) => {
-    event.preventDefault();
-    const newVal = event.target.value;
-    const chartId = props.chartId;
-
-    put(`/api/charts/${chartId}/top`, {
-      bottom_axis: newVal,
-    });
-  };
-
-  for (const datapoint in props.points) {
-    displayPoint({ point: props.points[datapoint] });
+  for (const i in props.points) {
+    // displayPoint({ point: props.points[datapoint] });
+    const datapoint = props.points[i];
+    // console.log(datapoint);
+    x_points.push(datapoint.x);
+    y_points.push(datapoint.y);
+    labels.push(datapoint.name);
   }
 
   return (
@@ -87,16 +54,23 @@ const Chart = (props) => {
           onChange={topChanged}
         ></input>
         <div className="horizontal">
-          <input
-            type="text"
-            defaultValue="left axis"
-            id="left"
-            className="axis"
-            onChange={leftChanged}
-          ></input>
-          <div className="grid">
-            <img src={Grid}></img>
-            <div className="points">{points}</div>
+          <input type="text" defaultValue="left axis" id="left" className="axis"></input>
+          <div className="grid" id="tester">
+            <Plot
+              data={[
+                {
+                  x: x_points,
+                  y: y_points,
+                  type: "scatter",
+                  mode: "markers+text",
+                  text: labels,
+                  marker: { color: "#705fbb" },
+                  textposition: "bottom center",
+                },
+              ]}
+              layout={{ width: 400, height: 380 }}
+              // config={{ responsive: true }}
+            />
           </div>
           <input
             type="text"

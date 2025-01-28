@@ -67,7 +67,7 @@ const Create = () => {
   return (
     <>
       <div className="Create-container">
-        {/* <Chart
+        <Chart
           points={[
             { name: "ayl27", x: -2, y: -2 },
             { name: "lilian", x: 10, y: -10 },
@@ -76,10 +76,10 @@ const Create = () => {
             { name: "buka buka", x: 0, y: 0 },
             { name: "l", x: -12, y: -12 },
           ]}
-        /> */}
+        />
         {/* <Chart /> */}
 
-        <Chart points={points} />
+        {/* <Chart points={points} /> */}
         <NewPoint
           chartId={chartId}
           onNewPoint={handleNewPoint}
