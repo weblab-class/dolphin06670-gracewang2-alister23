@@ -39,7 +39,9 @@ const MyCharts = () => {
         setLiked(updatedLikes);
 
         // Populate userLiked
+        console.log("userId: ", userId);
         get(`/api/user/like/${userId}`).then((userLiked) => {
+          console.log("Successfully populated userLiked.");
           setUserLiked(userLiked);
         });
       });
@@ -136,7 +138,6 @@ const MyCharts = () => {
       });
 
       // Update user likes
-      // Update user liked status
       put(userLikeUrl, { userId: userId }).then((updatedUser) => {
         setUserLiked((prevUserLiked) => ({
           ...prevUserLiked,

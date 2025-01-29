@@ -56,8 +56,8 @@ const App = () => {
 
   return (
     <>
-      <NavBar />
       <UserContext.Provider value={authContextValue}>
+        <NavBar />
         <Outlet />
       </UserContext.Provider>
     </>

@@ -57,9 +57,50 @@ router.use(auth.ensureLoggedIn);
 // Use chartRoutes for all routes starting with "/api/chart"
 router.use("/chart", chartRoutes);
 
+// Check if an email (user) exists
+router.get("/user_exists/:email", (req, res) => {
+  const email = req.params.email;
+  User.findOne({ email: email }).then((user) => {
+    if (user) {
+      res.send({ exists: true });
+    } else {
+      res.send({ exists: false });
+    }
+  });
+});
+
 //Gets all charts
 router.get("/all_charts", (req, res) => {
   Chart.find({}).then((charts) => res.send(charts)); //Eventually change this to only private charts
+});
+
+// Gets all public charts
+router.get("/public_charts", (req, res) => {
+  Chart.find({ isPublic: true })
+    .then((charts) => {
+      res.send(charts);
+    })
+    .catch((err) => {
+      console.error("There was an issue trying to get all public charts: ", err);
+      res.status(500).send({ message: "Failed to get public charts" });
+    });
+});
+
+// Fetch user details (by ID)
+router.get("/user/:id", (req, res) => {
+  User.findById(req.params.id)
+    .then((user) => {
+      if (!user) {
+        return res
+          .status(404)
+          .send({ message: "Wanted to get user through ID, but user not found." });
+      }
+      res.send(user);
+    })
+    .catch((err) => {
+      console.error("Failed to get user by ID: ", err);
+      res.status(500).send({ message: "Failed to get user by ID" });
+    });
 });
 
 //Gets charts made by current user
@@ -71,7 +112,17 @@ router.get("/my_charts", (req, res) => {
 // Gets the mapping between chart ID and whether the user has liked the chart
 router.get("/user/like/:id", (req, res) => {
   // :id should be user ID
-  User.find({ _id: req.params.id }).then((user) => res.send(user.userLiked));
+  User.findById(req.params.userId)
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send({ message: "User not found" });
+      }
+      res.json(user.userLiked); // Ensure the response is in JSON format
+    })
+    .catch((err) => {
+      console.error("Error fetching user liked charts:", err);
+      res.status(500).send({ message: "Failed to fetch user liked charts" });
+    });
 });
 
 // Like a chart by updating userLiked field

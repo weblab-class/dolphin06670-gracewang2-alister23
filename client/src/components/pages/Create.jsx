@@ -20,38 +20,22 @@ const Create = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const chartIdFromQuery = queryParams.get("chartId");
+  const error = "";
 
   // Create a new chart and set its ID
   // I know previous code used googleid, but I'm going to replace everything with _id for now.
   useEffect(() => {
     if (userId) {
       if (chartIdFromQuery) {
-        get(`/api/chart/${chartIdFromQuery}`).then((chart) => {
-          setChart(chart);
-          setChartId(chart._id);
-          setPoints(chart.points);
-        });
-      } else {
-        const newChart = {
-          name: "New Chart",
-          owner_id: userId,
-        };
-
-        post("/api/chart/create", newChart)
+        get(`/api/chart/${chartIdFromQuery}`)
           .then((chart) => {
+            error = "";
+            setChart(chart);
             setChartId(chart._id);
-            // When a chart is created, submit it to the database
-            const chartData = {
-              chartId: chart._id,
-              userId: userId,
-            };
-
-            post("/api/chart/submit", chartData).then((user) => {
-              console.log("Chart submitted: ", user);
-            });
+            setPoints(chart.points);
           })
           .catch((err) => {
-            console.error("Error sending POST request in Create.jsx: ", err);
+            error = "Hmm, it seems like this chart doesn't exist. Are you sure this is correct?";
           });
       }
     }
@@ -70,6 +54,10 @@ const Create = () => {
   // In this case, we should remind them to log in.
   if (!userId) {
     return <div>Please log in to create a chart.</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
   }
 
   // When there's a new point, add it to the list of points
