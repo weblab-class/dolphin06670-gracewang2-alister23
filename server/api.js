@@ -70,17 +70,21 @@ router.get("/my_charts", (req, res) => {
 
 //Returns point given ID
 router.get("/point/:id", (req, res) => {
-  Chart.find({ _id: req.query.id }).then((point) => res.send(point));
+  Point.find({ _id: req.query.id }).then((point) => res.send(point));
 });
 
 //Creates a point
 router.post("/point", (req, res) => {
-  const newPoint = new Chart({
+  const newPoint = Point({
     name: req.body.name,
     x_coord: req.body.x_coord,
     y_coord: req.body.y_coord,
     parent: req.body.parent,
   });
+  console.log("Bruh");
+  console.log(newPoint.name);
+  console.log(newPoint.x_coord);
+  console.log(newPoint.y_coord);
   newPoint.save().then((comment) => res.send(comment));
 });
 
@@ -90,7 +94,7 @@ router.put("/point/:id", (req, res) => {
   const { name, x_coord, y_coord } = req.body;
 
   //To do: Make sure it only updates if owner_id == existing id
-  Chart.updateOne(
+  Point.updateOne(
     { _id: req.query.id },
     {
       $set: {
