@@ -76,3 +76,18 @@ export function del(endpoint, params = {}) {
       throw `DELETE request to ${endpoint} failed with error:\n${error}`;
     });
 }
+
+// Helper code to make a put request. Default parameter of empty JSON Object for params.
+// Returns a Promise to a JSON Object.
+export function put(endpoint, params = {}) {
+  return fetch(endpoint, {
+    method: "put",
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify(params),
+  })
+    .then(convertToJSON) // convert result to JSON object
+    .catch((error) => {
+      // give a useful error message
+      throw `PUT request to ${endpoint} failed with error:\n${error}`;
+    });
+}

@@ -3,11 +3,10 @@ import { Outlet } from "react-router-dom";
 
 import jwt_decode from "jwt-decode";
 
+import { get, post, del, put } from "../utilities";
 import "../utilities.css";
 
 import { socket } from "../client-socket";
-
-import { get, post } from "../utilities";
 
 export const UserContext = createContext(null);
 
