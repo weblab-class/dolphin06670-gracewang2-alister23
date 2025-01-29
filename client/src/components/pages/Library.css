@@ -1,4 +1,60 @@
 .library-container {
-  height: 95vh;
-  background-color: var(--white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 95%;
+  position: relative;
+}
+
+.title-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: auto;
+  background: var(--slateblue);
+  padding: 0.5rem 5rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  margin-top: 2rem;
+  margin-left: 2rem;
+  align-self: flex-start;
+}
+
+.library-title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--white);
+}
+
+.charts-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* From MyCharts.css */
+.chart-card {
+  position: relative; /* This is so that "Make Public" is in the top-right of each card. */
+  background: linear-gradient(145deg, #d9d9d9, #f0f0f0); /* Silver gradient */
+  border: 1px solid var(--silver);
+  border-radius: 8px;
+  padding: 16px;
+  width: 25%; /* Set fixed width */
+  aspect-ratio: 3 / 1; /* Set aspect ratio */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Space out title and text */
+  align-items: center; /* Center content horizontally */
+  transition: transform 0.3s, box-shadow 0.3s; /* Add some interactivity */
+}
+
+.chart-card h2 {
+  margin: 0;
+  text-align: center; /* Center-align "New Chart" text */
+}
+
+.chart-card p {
+  margin: 4px 0;
+  text-align: left; /* Bottom text stays left-aligned */
 }

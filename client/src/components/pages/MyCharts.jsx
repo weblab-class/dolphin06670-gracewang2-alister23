@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
 
 import "../../utilities.css";
-import { get, post, del } from "../../utilities";
+import { get, post, del, put } from "../../utilities";
 import "./MyCharts.css";
 import { UserContext } from "../App";
 
@@ -48,13 +48,13 @@ const MyCharts = () => {
     setIsModalOpen(true);
     setSelectedChart(chartId);
     if (chartId) {
-      get(`/api/chart/${chartId}/name`).then((name) => {
+      get(`/api/chart/name/${chartId}`).then((name) => {
         setSelectedChartName(name);
       });
     }
   };
 
-  const handleShareSubmit = (shareWith) => {
+  const handleShareSubmit = (email, permission) => {
     // Only sharing with a specific user; we can have a separate button to "Make Public" or "Make Private".
     put("/api/chart/share", { chartId: selectedChart, email: email, permission: permission })
       .then((response) => {
