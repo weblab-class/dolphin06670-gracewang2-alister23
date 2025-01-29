@@ -7,7 +7,7 @@ import { Point } from "@tsparticles/engine";
 // import { set } from "core-js/core/dict";
 
 const NewPoint = (props) => {
-  const [name, setName] = useState("");
+  const [name, setName] = useState("Enter point");
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
   const [parent, setParent] = useState(props.chartId);
@@ -39,9 +39,9 @@ const NewPoint = (props) => {
       .then((response) => {
         console.log("Point created: ", response);
         props.onNewPoint(response);
-        setName("");
-        setX("");
-        setY("");
+        setName("Enter point");
+        setX("0");
+        setY("0");
       })
       .catch((err) => {
         console.error("Error creating point: ", err);
