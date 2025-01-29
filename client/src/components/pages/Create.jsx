@@ -54,11 +54,16 @@ const Create = () => {
       get(`/api/chart/${chartId}/points`).then((fetchedPoints) => {
         setPoints(fetchedPoints);
       });
-      // get(`/api/chart/${chartId}/top`).then((top_axis) => {
-      //   setTop(top_axis);
-      // });
     }
   }, [chartId]);
+
+  // useEffect(() => {
+  //   if (chartId) {
+  //     get(`/api/chart/${chartId}/top`).then((top_axis) => {
+  //       setTop(top_axis);
+  //     });
+  //   }
+  // }, [chartId]);
 
   // I'm thinking that the problem is that sometimes userId is undefined, which gives a 400 error in our endpoint.
   // In this case, we should remind them to log in.
@@ -69,6 +74,17 @@ const Create = () => {
   // When there's a new point, add it to the list of points
   const handleNewPoint = (newPoint) => {
     setPoints([...points, newPoint]);
+  };
+
+  const handleChanged = () => {
+    // console.log("changing");
+    if (chartId) {
+      get(`/api/chart/${chartId}`).then((chart) => {
+        // console.log(chart[0].top_axis);
+        setTop(chart[0].top_axis);
+        // console.log(top);
+      });
+    }
   };
 
   return (
@@ -86,7 +102,7 @@ const Create = () => {
         /> */}
         {/* <Chart /> */}
 
-        <Chart points={points} chartId={chartId} />
+        <Chart points={points} chartId={chartId} onChanged={handleChanged} />
         <NewPoint
           chartId={chartId}
           onNewPoint={handleNewPoint}

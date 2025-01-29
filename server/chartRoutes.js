@@ -54,14 +54,21 @@ router.get("/:id/points", (req, res) => {
   });
 });
 
-// Fetches top axis name
-router.get("/:id/top", (req, res) => {
-  Chart.find({ _id: req.query.id }).then((chart) => res.send(chart.top_axis));
-});
+// // Fetches top axis name
+// router.get("/:id/top", (req, res) => {
+//   Chart.find({ _id: req.query.id }).then((chart) =>
+//     res.status(200).json({ message: chart.top_axis })
+//   );
+// });
 
 //Returns chart given ID
-router.get("/:id", (req, res) => {
-  Chart.find({ _id: req.query.id }).then((chart) => res.send(chart));
+router.get("/:id", async (req, res) => {
+  const chartId = req.params.id;
+  const chart = await Chart.find({ _id: chartId });
+  if (chart) {
+    // console.log(chart.top_axis);
+    res.json(chart);
+  }
 });
 
 //Edits a chart
@@ -145,6 +152,22 @@ router.put("/:id/bottom", async (req, res) => {
       return res.status(400).send({ message: "Invalid input" });
     }
     const result = await Chart.updateOne({ _id: chartId }, { $set: { bottom_axis: bottom_axis } });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "An error occurred" });
+  }
+});
+
+//When the name changes
+router.put("/:id/name", async (req, res) => {
+  const { name } = req.body;
+
+  try {
+    const chartId = req.params.id;
+    if (!chartId || name === undefined) {
+      return res.status(400).send({ message: "Invalid input" });
+    }
+    const result = await Chart.updateOne({ _id: chartId }, { $set: { name: name } });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "An error occurred" });

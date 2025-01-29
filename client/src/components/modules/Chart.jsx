@@ -28,17 +28,16 @@ const Chart = (props) => {
     );
     // console.log(points);
   };
-
   //Called when top axis changes
   const topChanged = (event) => {
     event.preventDefault();
     const newVal = event.target.value;
-    console.log(newVal);
     const chartId = props.chartId;
 
     put(`/api/chart/${chartId}/top`, {
       top_axis: newVal,
     });
+    props.onChanged();
   };
 
   //Called when left axis changes
@@ -50,6 +49,7 @@ const Chart = (props) => {
     put(`/api/chart/${chartId}/left`, {
       left_axis: newVal,
     });
+    props.onChanged();
   };
 
   //Called when right axis changes
@@ -61,6 +61,7 @@ const Chart = (props) => {
     put(`/api/chart/${chartId}/right`, {
       right_axis: newVal,
     });
+    props.onChanged();
   };
 
   //Called when bottom axis changes
@@ -72,6 +73,19 @@ const Chart = (props) => {
     put(`/api/chart/${chartId}/bottom`, {
       bottom_axis: newVal,
     });
+    props.onChanged();
+  };
+
+  //Called when name changes
+  const nameChanged = (event) => {
+    event.preventDefault();
+    const newVal = event.target.value;
+    const chartId = props.chartId;
+
+    put(`/api/chart/${chartId}/name`, {
+      name: newVal,
+    });
+    props.onChanged();
   };
 
   for (const datapoint in props.points) {
@@ -80,7 +94,7 @@ const Chart = (props) => {
 
   return (
     <>
-      <div className="container">
+      <div className="Chart-container">
         <input
           type="text"
           defaultValue="top axis"
@@ -116,7 +130,7 @@ const Chart = (props) => {
           onChange={bottomChanged}
         ></input>
         <br></br>
-        <input type="text" defaultValue="chart name" id="name"></input>
+        <input type="text" defaultValue="chart name" id="name" onChange={nameChanged}></input>
       </div>
     </>
   );
