@@ -15,52 +15,51 @@ const ShareModal = (props) => {
   const [error, setError] = useState("");
 
   if (!props.isOpen) {
-  if (!props.isOpen) {
-    return null;
-  }
+    if (!props.isOpen) {
+      return null;
+    }
 
-  const handleShareWithEmail = () => {
-    // Validate the email
-    get(`/api/user_exists/${email}`).then((response) => {
-      if (response.exists) {
-        props.onShare(email, permission);
-        props.onClose();
-      } else {
-        setError("Oops! It seems like we don't have a user with this email address.");
-      }
-    });
-  };
+    const handleShareWithEmail = () => {
+      // Validate the email
+      get(`/api/user_exists/${email}`).then((response) => {
+        if (response.exists) {
+          props.onShare(email, permission);
+          props.onClose();
+        } else {
+          setError("Oops! It seems like we don't have a user with this email address.");
+        }
+      });
+    };
 
-  return (
-    <div className="share-modal">
-      <div className="share-modal-content">
-        <h2>Share {props.chartName} with:</h2>
-        <input
-          type="text"
-          placeholder="Enter email here"
-          value={email}
-          onChange={(event) => {
-            setEmail(event.target.value);
-            setError(""); // Error should be cleared when user types
-          }}
-        />
-        {error && <p className="no-such-user-error-message">{error}</p>}
+    return (
+      <div className="share-modal">
+        <div className="share-modal-content">
+          <h2>Share {props.chartName} with:</h2>
+          <input
+            type="text"
+            placeholder="Enter email here"
+            value={email}
+            onChange={(event) => {
+              setEmail(event.target.value);
+              setError(""); // Error should be cleared when user types
+            }}
+          />
+          {error && <p className="no-such-user-error-message">{error}</p>}
 
-        {/* Permission dropdown */}
-        <select value={permission} onChange={(event) => setPermission(event.target.value)}>
-          <option value="view">View Only</option>
-          <option value="edit">Can Edit</option>
-        </select>
+          {/* Permission dropdown */}
+          <select value={permission} onChange={(event) => setPermission(event.target.value)}>
+            <option value="view">View Only</option>
+            <option value="edit">Can Edit</option>
+          </select>
 
-        {/* Share and Cancel buttons */}
-        <button onClick={handleShareWithEmail}>Share with a Friend</button>
-        <button onClick={props.onClose}>Cancel</button>
-        <button onClick={props.onClose}>Cancel</button>
+          {/* Share and Cancel buttons */}
+          <button onClick={handleShareWithEmail}>Share with a Friend</button>
+          <button onClick={props.onClose}>Cancel</button>
+          <button onClick={props.onClose}>Cancel</button>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
-
-export default ShareModal;
 
 export default ShareModal;

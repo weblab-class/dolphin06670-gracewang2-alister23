@@ -47,6 +47,73 @@ router.post("/create", (req, res) => {
     });
 });
 
+// Returns status (public or not) of chart given ID
+router.get("/status/:id", (req, res) => {
+  Chart.find({ _id: req.params.id }).then((chart) => res.send({ isPublic: chart.isPublic }));
+});
+
+// Makes a chart public or private
+router.put("/status/:id", async (req, res) => {
+  const status = req.body.status;
+  try {
+    const chart = await Chart.findById(req.params.id);
+    if (!chart) {
+      console.error("Couldn't find chart when making chart public or private");
+      return res
+        .status(404)
+        .send({ message: "Chart not found (when trying to make chart public or private)" });
+    }
+    chart.isPublic = status === "public"; // chart.public is a boolean
+    await chart.save();
+    console.log("Logging chart.public in the API endpoint (after put)", chart.isPublic);
+    res.status(200).send({ message: "Chart status (public or private) updated successfully" });
+  } catch (err) {
+    res.status(500).send({ message: "An error occurred" });
+  }
+});
+
+// Shares a chart with a user
+router.put("/share", async (req, res) => {
+  const { chartId, email, permission } = req.body;
+  try {
+    // Get chart
+    const chart = await Chart.findById(chartId);
+    if (!chart) {
+      return res.status(404).send({ message: "Chart not found" });
+    }
+
+    // Get user
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    // Update permission
+    if (permission === "view") {
+      if (!chart.can_view.includes(user._id)) {
+        chart.can_view.push(user._id);
+      }
+      // Also, if user is in can_edit, remove them
+      chart.can_edit = chart.can_edit.filter((id) => id !== user._id);
+    } else if (permission === "edit") {
+      if (!chart.can_edit.includes(user._id)) {
+        chart.can_edit.push(user._id);
+      }
+
+      if (!chart.can_view.includes(user._id)) {
+        chart.can_view.push(user._id);
+      } else {
+        return res
+          .status(400)
+          .send({ message: "Permission isn't view or edit, which means something is wrong." });
+      }
+    }
+  } catch (err) {
+    console.error("Oops! Something went wrong when sharing chart: ", err);
+    res.status(500).send({ message: "Failed to share chart" });
+  }
+});
+
 // Returns name of chart given ID
 router.get("/:id/name", (req, res) => {
   Chart.find({ _id: req.params.id }).then((chart) => res.send(chart.name));
@@ -84,6 +151,58 @@ router.put("/:id", (req, res) => {
       },
     }
   );
+});
+
+//Add a like to a chart
+router.put("/:id/like", async (req, res) => {
+  try {
+    const chartId = req.params.id;
+    const result = await Chart.findById(chartId);
+    // res.status(200).json({ message: result.likes });
+    result.likes += 1;
+    console.log("liked chart");
+    await result
+      .save()
+      .then((chart) => {
+        console.log("Likes: ", chart.likes);
+        res.status(201).json(chart);
+      })
+      .catch((err) => {
+        if (!res.headersSent) {
+          res.status(500).json({ error: "Failed to like" }); // Ensure only one response is sent
+        }
+      });
+    return true;
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "An error occurred" });
+  }
+});
+
+//Remove your like from a chart
+router.put("/:id/unlike", async (req, res) => {
+  try {
+    const chartId = req.params.id;
+    const result = await Chart.findById(chartId);
+    // res.status(200).json({ message: result.likes });
+    result.likes -= 1;
+    console.log("unliked chart");
+    await result
+      .save()
+      .then((chart) => {
+        console.log("Likes: ", chart.likes);
+        res.status(201).json(chart);
+      })
+      .catch((err) => {
+        if (!res.headersSent) {
+          res.status(500).json({ error: "Failed to unlike" }); // Ensure only one response is sent
+        }
+      });
+    return true;
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "An error occurred" });
+  }
 });
 
 //When the top axis label changes
