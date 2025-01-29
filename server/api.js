@@ -81,7 +81,6 @@ router.post("/point", (req, res) => {
     y_coord: req.body.y_coord,
     parent: req.body.parent,
   });
-  console.log("Bruh");
   console.log(newPoint.name);
   console.log(newPoint.x_coord);
   console.log(newPoint.y_coord);

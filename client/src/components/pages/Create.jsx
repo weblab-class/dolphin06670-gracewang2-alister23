@@ -15,6 +15,10 @@ const Create = () => {
   const [chartId, setChartId] = useState("");
   const [points, setPoints] = useState([]);
   const { userId } = useContext(UserContext);
+  const [left, setLeft] = useState("left");
+  const [right, setRight] = useState("right");
+  const [top, setTop] = useState("top");
+  const [bottom, setBottom] = useState("bottom");
 
   // Create a new chart and set its ID
   // I know previous code used googleid, but I'm going to replace everything with _id for now.
@@ -44,12 +48,15 @@ const Create = () => {
     }
   }, []);
 
-  // Fetch all points for the current chart
+  // Fetch all points and axes for the current chart
   useEffect(() => {
     if (chartId) {
       get(`/api/chart/${chartId}/points`).then((fetchedPoints) => {
         setPoints(fetchedPoints);
       });
+      // get(`/api/chart/${chartId}/top`).then((top_axis) => {
+      //   setTop(top_axis);
+      // });
     }
   }, [chartId]);
 
@@ -79,14 +86,18 @@ const Create = () => {
         /> */}
         {/* <Chart /> */}
 
-        <Chart points={points} />
+        <Chart points={points} chartId={chartId} />
         <NewPoint
           chartId={chartId}
           onNewPoint={handleNewPoint}
-          left="potato"
-          right="carrot"
-          bottom="dominos"
-          top="subway"
+          // left={left_axis}
+          // right={right_axis}
+          // bottom={bottom_axis}
+          // top={top}
+          left="left"
+          right="right"
+          bottom="bottom"
+          top="top"
         />
       </div>
     </>

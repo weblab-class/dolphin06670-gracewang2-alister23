@@ -54,6 +54,11 @@ router.get("/:id/points", (req, res) => {
   });
 });
 
+// Fetches top axis name
+router.get("/:id/top", (req, res) => {
+  Chart.find({ _id: req.query.id }).then((chart) => res.send(chart.top_axis));
+});
+
 //Returns chart given ID
 router.get("/:id", (req, res) => {
   Chart.find({ _id: req.query.id }).then((chart) => res.send(chart));
@@ -84,6 +89,7 @@ router.put("/:id", (req, res) => {
 //When the top axis label changes
 router.put("/:id/top", async (req, res) => {
   const { top_axis } = req.body;
+  // console.log(top_axis);
 
   try {
     const chartId = req.params.id;
@@ -122,7 +128,7 @@ router.put("/:id/right", async (req, res) => {
     if (!chartId || right_axis === undefined) {
       return res.status(400).send({ message: "Invalid input" });
     }
-    const result = await Chart.updateOne({ _id: chartId }, { $set: { right_axis: rigjt_axis } });
+    const result = await Chart.updateOne({ _id: chartId }, { $set: { right_axis: right_axis } });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "An error occurred" });

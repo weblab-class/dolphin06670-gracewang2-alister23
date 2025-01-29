@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext } from "react";
 import "./Chart.css";
 import "../../utilities.css";
-import { get, post } from "../../utilities";
+import { get, post, put } from "../../utilities";
 import Grid from "../../../images/grid.png";
 
 const Chart = (props) => {
@@ -26,16 +26,17 @@ const Chart = (props) => {
         <p className="pointName">{props.point.name}</p>
       </div>
     );
-    console.log(points);
+    // console.log(points);
   };
 
   //Called when top axis changes
   const topChanged = (event) => {
     event.preventDefault();
     const newVal = event.target.value;
+    console.log(newVal);
     const chartId = props.chartId;
 
-    put(`/api/charts/${chartId}/top`, {
+    put(`/api/chart/${chartId}/top`, {
       top_axis: newVal,
     });
   };
@@ -46,7 +47,7 @@ const Chart = (props) => {
     const newVal = event.target.value;
     const chartId = props.chartId;
 
-    put(`/api/charts/${chartId}/left`, {
+    put(`/api/chart/${chartId}/left`, {
       left_axis: newVal,
     });
   };
@@ -57,7 +58,7 @@ const Chart = (props) => {
     const newVal = event.target.value;
     const chartId = props.chartId;
 
-    put(`/api/charts/${chartId}/right`, {
+    put(`/api/chart/${chartId}/right`, {
       right_axis: newVal,
     });
   };
@@ -68,7 +69,7 @@ const Chart = (props) => {
     const newVal = event.target.value;
     const chartId = props.chartId;
 
-    put(`/api/charts/${chartId}/top`, {
+    put(`/api/chart/${chartId}/bottom`, {
       bottom_axis: newVal,
     });
   };
