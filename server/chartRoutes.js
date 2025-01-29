@@ -115,7 +115,7 @@ router.put("/share", async (req, res) => {
 });
 
 // Returns name of chart given ID
-router.get("/:id/name", (req, res) => {
+router.get("/name/:id", (req, res) => {
   Chart.find({ _id: req.params.id }).then((chart) => res.send(chart.name));
 });
 

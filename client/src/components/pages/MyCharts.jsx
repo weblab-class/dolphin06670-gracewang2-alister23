@@ -46,12 +46,14 @@ const MyCharts = () => {
 
   const handleShare = (chartId) => {
     setIsModalOpen(true);
+    console.log("Modal open (before)");
     setSelectedChart(chartId);
     if (chartId) {
       get(`/api/chart/name/${chartId}`).then((name) => {
         setSelectedChartName(name);
       });
     }
+    console.log("Modal open (after)");
   };
 
   const handleShareSubmit = (email, permission) => {
