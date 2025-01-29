@@ -58,7 +58,7 @@ const Library = () => {
             <h2>{chart.name}</h2>
             <p>Created by: {userDetails[chart.owner_id]}</p>
             <p>{chart.likes} ❤️</p> {/* REPLACE WITH HEART EMOJI */}
-            <button onClick={() => handleEdit(chart._id)}>Edit</button>
+            <button onClick={() => handleEdit(chart._id)}>View</button>
           </div>
         ))}
       </div>
