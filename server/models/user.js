@@ -7,6 +7,8 @@ const UserSchema = new mongoose.Schema({
   googleid: String,
   email: { type: String, required: true, unique: true },
   charts: { type: [mongoose.Schema.Types.ObjectId], ref: "Chart", default: [] },
+  // userLiked should be a map mapping chartId to Boolean
+  userLiked: { type: Map, of: Boolean, default: {} },
 });
 
 // compile model from schema

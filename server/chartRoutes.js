@@ -86,6 +86,58 @@ router.put("/:id", (req, res) => {
   );
 });
 
+//Add a like to a chart
+router.put("/:id/like", async (req, res) => {
+  try {
+    const chartId = req.params.id;
+    const result = await Chart.findById(chartId);
+    // res.status(200).json({ message: result.likes });
+    result.likes += 1;
+    console.log("liked chart");
+    await result
+      .save()
+      .then((chart) => {
+        console.log("Likes: ", chart.likes);
+        res.status(201).json(chart);
+      })
+      .catch((err) => {
+        if (!res.headersSent) {
+          res.status(500).json({ error: "Failed to like" }); // Ensure only one response is sent
+        }
+      });
+    return true;
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "An error occurred" });
+  }
+});
+
+//Remove your like from a chart
+router.put("/:id/unlike", async (req, res) => {
+  try {
+    const chartId = req.params.id;
+    const result = await Chart.findById(chartId);
+    // res.status(200).json({ message: result.likes });
+    result.likes -= 1;
+    console.log("unliked chart");
+    await result
+      .save()
+      .then((chart) => {
+        console.log("Likes: ", chart.likes);
+        res.status(201).json(chart);
+      })
+      .catch((err) => {
+        if (!res.headersSent) {
+          res.status(500).json({ error: "Failed to unlike" }); // Ensure only one response is sent
+        }
+      });
+    return true;
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "An error occurred" });
+  }
+});
+
 //When the top axis label changes
 router.put("/:id/top", async (req, res) => {
   const { top_axis } = req.body;

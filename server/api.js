@@ -68,6 +68,48 @@ router.get("/my_charts", (req, res) => {
   Chart.find({ owner_id: req.query.userId }).then((charts) => res.send(charts));
 });
 
+// Gets the mapping between chart ID and whether the user has liked the chart
+router.get("/user/like/:id", (req, res) => {
+  // :id should be user ID
+  User.find({ _id: req.params.id }).then((user) => res.send(user.userLiked));
+});
+
+// Like a chart by updating userLiked field
+router.put("/user/like/:id", async (req, res) => {
+  // :id should be chart ID
+  // pass in user ID
+  try {
+    const userId = req.query.userId;
+    const result = await User.findById(userId);
+    result.userLiked[req.params.id] = true;
+    await result
+      .save()
+      .then((user) => res.status(201).json(user))
+      .catch((err) => res.status(500).json({ error: "Found user but failed to like." }));
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "Oops! Seems like there was an error liking the chart." });
+  }
+});
+
+// Unlike a chart by updating userLiked field
+router.put("/user/unlike/:id", async (req, res) => {
+  // :id should be chart ID
+  // pass in user ID
+  try {
+    const userId = req.query.userId;
+    const result = await User.findById(userId);
+    result.userLiked[req.params.id] = false;
+    await result
+      .save()
+      .then((user) => res.status(201).json(user))
+      .catch((err) => res.status(500).json({ error: "Found user but failed to unlike." }));
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "Oops! Seems like there was an error unliking the chart." });
+  }
+});
+
 //Returns point given ID
 router.get("/point/:id", (req, res) => {
   Point.find({ _id: req.query.id }).then((point) => res.send(point));

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
 
 import "../../utilities.css";
-import { get, post, del } from "../../utilities";
+import { get, post, del, put } from "../../utilities";
 import "./MyCharts.css";
 import { UserContext } from "../App";
 
@@ -11,6 +11,7 @@ import ShareModal from "../modules/ShareModal";
 
 /**
  * Page for viewing my charts and charts that are shared with me.
+ * Each chart card has a Delete, Share, and Like button + Make Public button
  */
 const MyCharts = () => {
   const { userId } = useContext(UserContext);
@@ -20,6 +21,8 @@ const MyCharts = () => {
   const [selectedChartName, setSelectedChartName] = useState("New Chart");
   const [error, setError] = useState(""); // I don't know if we actually need this.
   const navigate = useNavigate();
+  const [liked, setLiked] = useState({}); // Map of chartId to number of likes
+  const [userLiked, setUserLiked] = useState({}); // Map of chartId to whether the user liked the chart
 
   useEffect(() => {
     if (userId) {
@@ -27,6 +30,18 @@ const MyCharts = () => {
         console.log("My charts: ", charts);
         charts.sort((a, b) => (a.name < b.name ? -1 : 1));
         setCharts(charts);
+
+        // Populate liked
+        const updatedLikes = {};
+        for (const chart of charts) {
+          updatedLikes[chart._id] = chart.likes;
+        }
+        setLiked(updatedLikes);
+
+        // Populate userLiked
+        get(`/api/user/like/${userId}`).then((userLiked) => {
+          setUserLiked(userLiked);
+        });
       });
     }
   }, [userId]);
@@ -35,6 +50,24 @@ const MyCharts = () => {
   if (!userId) {
     return <div>Please log in to view your charts.</div>; // Make this prettier.
   }
+
+  /*
+  useEffect(() => {
+    // Update liked
+    const updatedLikes = {};
+    for (const chart of charts) {
+      updatedLikes[chart._id] = chart.likes;
+    }
+    setLiked(updatedLikes);
+
+    // Update userLiked
+    const updatedUserLiked = {};
+    for (const chart of charts) {
+      updatedUserLiked[chart._id] = false;
+    }
+    setUserLiked(updatedUserLiked);
+  });
+  */
 
   const handleDelete = (chartId) => {
     console.log("Deleting chart: ", chartId);
@@ -87,6 +120,32 @@ const MyCharts = () => {
     navigate(`/create?chartId=${chartId}`); // Ensure the URL matches the route defined in index.jsx
   };
 
+  const handleLike = (chartId) => {
+    const isLiked = userLiked[chartId];
+    const url = isLiked ? `/api/chart/${chartId}/unlike` : `/api/chart/${chartId}/like`;
+    const userLikeUrl = isLiked ? `/api/user/unlike/${chartId}` : `/api/user/like/${chartId}`;
+
+    if (chartId) {
+      // Update chart likes
+      put(url).then((updatedChart) => {
+        setCharts((prevCharts) =>
+          prevCharts.map((chart) =>
+            chart._id === chartId ? { ...chart, likes: updatedChart.likes } : chart
+          )
+        );
+      });
+
+      // Update user likes
+      // Update user liked status
+      put(userLikeUrl, { userId: userId }).then((updatedUser) => {
+        setUserLiked((prevUserLiked) => ({
+          ...prevUserLiked,
+          [chartId]: !isLiked,
+        }));
+      });
+    }
+  };
+
   return (
     <div className="mycharts-container">
       <div className="title-container">
@@ -100,6 +159,7 @@ const MyCharts = () => {
             <button onClick={() => handleDelete(chart._id)}>Delete</button>
             <button onClick={() => handleShare(chart._id)}>Share</button>
             <button onClick={() => handleEdit(chart._id)}>Edit</button>
+            <button onClick={() => handleLike(chart._id)}>Like</button>
             <button
               className="toggle-public-button"
               onClick={() => togglePublic(chart._id, chart.isPublic)}
