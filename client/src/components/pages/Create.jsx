@@ -17,6 +17,10 @@ const Create = () => {
   const [chart, setChart] = useState(null);
   const [points, setPoints] = useState([]);
   const { userId } = useContext(UserContext);
+  const [left, setLeft] = useState("left");
+  const [right, setRight] = useState("right");
+  const [top, setTop] = useState("top");
+  const [bottom, setBottom] = useState("bottom");
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const chartIdFromQuery = queryParams.get("chartId");
@@ -57,7 +61,7 @@ const Create = () => {
     }
   }, []);
 
-  // Fetch all points for the current chart
+  // Fetch all points and axes for the current chart
   useEffect(() => {
     if (chartId) {
       get(`/api/chart/${chartId}/points`).then((fetchedPoints) => {
@@ -65,6 +69,14 @@ const Create = () => {
       });
     }
   }, [chartId]);
+
+  // useEffect(() => {
+  //   if (chartId) {
+  //     get(`/api/chart/${chartId}/top`).then((top_axis) => {
+  //       setTop(top_axis);
+  //     });
+  //   }
+  // }, [chartId]);
 
   // I'm thinking that the problem is that sometimes userId is undefined, which gives a 400 error in our endpoint.
   // In this case, we should remind them to log in.
@@ -75,6 +87,17 @@ const Create = () => {
   // When there's a new point, add it to the list of points
   const handleNewPoint = (newPoint) => {
     setPoints([...points, newPoint]);
+  };
+
+  const handleChanged = () => {
+    // console.log("changing");
+    if (chartId) {
+      get(`/api/chart/${chartId}`).then((chart) => {
+        // console.log(chart[0].top_axis);
+        setTop(chart[0].top_axis);
+        // console.log(top);
+      });
+    }
   };
 
   return (
@@ -92,14 +115,18 @@ const Create = () => {
         /> */}
         {/* <Chart /> */}
 
-        <Chart points={points} />
+        <Chart points={points} chartId={chartId} onChanged={handleChanged} />
         <NewPoint
           chartId={chartId}
           onNewPoint={handleNewPoint}
-          left="potato"
-          right="carrot"
-          bottom="dominos"
-          top="subway"
+          // left={left_axis}
+          // right={right_axis}
+          // bottom={bottom_axis}
+          // top={top}
+          left="left"
+          right="right"
+          bottom="bottom"
+          top="top"
         />
       </div>
     </>

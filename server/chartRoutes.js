@@ -126,9 +126,21 @@ router.get("/:id/points", (req, res) => {
   });
 });
 
+// // Fetches top axis name
+// router.get("/:id/top", (req, res) => {
+//   Chart.find({ _id: req.query.id }).then((chart) =>
+//     res.status(200).json({ message: chart.top_axis })
+//   );
+// });
+
 //Returns chart given ID
-router.get("/:id", (req, res) => {
-  Chart.find({ _id: req.query.id }).then((chart) => res.send(chart));
+router.get("/:id", async (req, res) => {
+  const chartId = req.params.id;
+  const chart = await Chart.find({ _id: chartId });
+  if (chart) {
+    // console.log(chart.top_axis);
+    res.json(chart);
+  }
 });
 
 //Edits a chart
@@ -208,6 +220,7 @@ router.put("/:id/unlike", async (req, res) => {
 //When the top axis label changes
 router.put("/:id/top", async (req, res) => {
   const { top_axis } = req.body;
+  // console.log(top_axis);
 
   try {
     const chartId = req.params.id;
@@ -246,7 +259,7 @@ router.put("/:id/right", async (req, res) => {
     if (!chartId || right_axis === undefined) {
       return res.status(400).send({ message: "Invalid input" });
     }
-    const result = await Chart.updateOne({ _id: chartId }, { $set: { right_axis: rigjt_axis } });
+    const result = await Chart.updateOne({ _id: chartId }, { $set: { right_axis: right_axis } });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "An error occurred" });
@@ -263,6 +276,22 @@ router.put("/:id/bottom", async (req, res) => {
       return res.status(400).send({ message: "Invalid input" });
     }
     const result = await Chart.updateOne({ _id: chartId }, { $set: { bottom_axis: bottom_axis } });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "An error occurred" });
+  }
+});
+
+//When the name changes
+router.put("/:id/name", async (req, res) => {
+  const { name } = req.body;
+
+  try {
+    const chartId = req.params.id;
+    if (!chartId || name === undefined) {
+      return res.status(400).send({ message: "Invalid input" });
+    }
+    const result = await Chart.updateOne({ _id: chartId }, { $set: { name: name } });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "An error occurred" });

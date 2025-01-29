@@ -78,7 +78,7 @@ const NewPoint = (props) => {
         </div>
         <div className="input_box">
           <label htmlFor="x_coord">
-            Position on the <b>{props.left}</b> to <b>{props.right}</b> axis (between -12 and 12):
+            Position from <b>{props.left}</b> to <b>{props.right}</b> (between -12 and 12):
             {"  "}
           </label>
           <input type="text" id="x_coord" onChange={handleXChange} value={x}></input>
@@ -86,7 +86,7 @@ const NewPoint = (props) => {
         </div>
         <div className="input_box">
           <label htmlFor="y_coord">
-            Position on the <b>{props.top}</b> to <b>{props.bottom}</b> axis (between -12 and 12):
+            Position from <b>{props.top}</b> to <b>{props.bottom}</b> (between -12 and 12):
             {"  "}
           </label>
           <input type="text" id="y_coord" onChange={handleYChange} value={y}></input>
