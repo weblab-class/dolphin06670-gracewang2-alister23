@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
 
 import "../../utilities.css";
@@ -13,6 +14,7 @@ const Library = () => {
   const { userId } = useContext(UserContext);
   const [charts, setCharts] = useState([]);
   const [userDetails, setUserDetails] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (userId) {
@@ -41,6 +43,10 @@ const Library = () => {
     );
   }
 
+  const handleEdit = (chartId) => {
+    navigate(`/create?chartId=${chartId}`); // Ensure the URL matches the route defined in index.jsx
+  };
+
   return (
     <div className="library-container">
       <div className="title-container">
@@ -52,6 +58,7 @@ const Library = () => {
             <h2>{chart.name}</h2>
             <p>Created by: {userDetails[chart.owner_id]}</p>
             <p>{chart.likes} ❤️</p> {/* REPLACE WITH HEART EMOJI */}
+            <button onClick={() => handleEdit(chart._id)}>Edit</button>
           </div>
         ))}
       </div>
