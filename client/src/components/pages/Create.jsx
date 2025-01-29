@@ -4,7 +4,7 @@ import NewPoint from "../modules/NewPoint";
 import Chart from "../modules/Chart";
 
 import "../../utilities.css";
-import { get, post } from "../../utilities";
+import { get, post, del, put } from "../../utilities";
 import "./Create.css";
 import { UserContext } from "../App";
 
