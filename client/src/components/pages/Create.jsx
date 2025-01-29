@@ -11,7 +11,7 @@ import { UserContext } from "../App";
 /**
  * Page for creating a new alignment chart.
  */
-const Create = () => {
+const Create = (props) => {
   const [chartId, setChartId] = useState("");
   const [points, setPoints] = useState([]);
   const { userId } = useContext(UserContext);

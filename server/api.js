@@ -8,11 +8,12 @@
 */
 
 const express = require("express");
+const mongoose = require("mongoose");
 
 // import models so we can interact with the database
+const User = require("./models/user");
 const Chart = require("./models/chart");
 const Point = require("./models/point");
-const User = require("./models/user");
 
 // import authentication library
 const auth = require("./auth");
@@ -71,16 +72,37 @@ router.get("/user_exists/:email", (req, res) => {
 
 //Gets all charts
 router.get("/all_charts", (req, res) => {
-  Chart.find({}).then((charts) => res.send(charts)); //Eventually change this to only private charts
+  Chart.find({}).then((charts) => {
+    res.send(charts);
+  }); //Eventually change this to only private charts
 });
 
 // Gets all public charts
 router.get("/public_charts", (req, res) => {
   Chart.find({ isPublic: true })
-    .then((charts) => res.send(charts))
+    .then((charts) => {
+      res.send(charts);
+    })
     .catch((err) => {
       console.error("There was an issue trying to get all public charts: ", err);
       res.status(500).send({ message: "Failed to get public charts" });
+    });
+});
+
+// Fetch user details (by ID)
+router.get("/user/:id", (req, res) => {
+  User.findById(req.params.id)
+    .then((user) => {
+      if (!user) {
+        return res
+          .status(404)
+          .send({ message: "Wanted to get user through ID, but user not found." });
+      }
+      res.send(user);
+    })
+    .catch((err) => {
+      console.error("Failed to get user by ID: ", err);
+      res.status(500).send({ message: "Failed to get user by ID" });
     });
 });
 
