@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
 
 import "../../utilities.css";
@@ -18,6 +19,7 @@ const MyCharts = () => {
   const [selectedChart, setSelectedChart] = useState(null);
   const [selectedChartName, setSelectedChartName] = useState("New Chart");
   const [error, setError] = useState(""); // I don't know if we actually need this.
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (userId) {
@@ -81,6 +83,10 @@ const MyCharts = () => {
       });
   };
 
+  const handleEdit = (chartId) => {
+    navigate(`/create?chartId=${chartId}`); // Ensure the URL matches the route defined in index.jsx
+  };
+
   return (
     <div className="mycharts-container">
       <div className="title-container">
@@ -90,10 +96,10 @@ const MyCharts = () => {
         {charts.map((chart) => (
           <div key={chart._id} className="chart-card">
             <h2>{chart.name}</h2>
-            <p>{chart.likes} heart-emoji</p> {/* REPLACE WITH HEART EMOJI */}
+            <p>{chart.likes} ❤️</p> {/* REPLACE WITH HEART EMOJI */}
             <button onClick={() => handleDelete(chart._id)}>Delete</button>
             <button onClick={() => handleShare(chart._id)}>Share</button>
-            <button>Edit</button>
+            <button onClick={() => handleEdit(chart._id)}>Edit</button>
             <button
               className="toggle-public-button"
               onClick={() => togglePublic(chart._id, chart.isPublic)}
