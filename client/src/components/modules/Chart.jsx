@@ -13,8 +13,9 @@ const Chart = (props) => {
 
     // const x = ;
     // const y = ;
-    const x = 7.3 + 3.56 * (12 + Number.parseFloat(props.point.x));
-    const y = 1.5 + 3.53 * (12 + Number.parseFloat(props.point.y));
+    const x = 7.3 + 3.56 * (12 + Number.parseFloat(props.point.x_coord));
+    const y = 1.5 + 3.53 * (12 + Number.parseFloat(props.point.y_coord));
+
     points.push(
       <div
         key={props.point._id}
